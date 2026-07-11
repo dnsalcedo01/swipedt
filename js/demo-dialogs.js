@@ -337,4 +337,63 @@
             }, 300);
         };
     };
+    window.openHeaderSearch = function() {
+        const logoRest = document.getElementById('header-logo-rest');
+        const form = document.getElementById('header-search-form');
+        const btn = document.getElementById('header-search-btn');
+        const input = document.getElementById('header-search-input');
+        
+        // Collapse Logo
+        if (logoRest) {
+            logoRest.classList.remove('max-w-[100px]', 'opacity-100', 'scale-x-100');
+            logoRest.classList.add('max-w-0', 'opacity-0', 'scale-x-0');
+            setTimeout(() => { if (logoRest.classList.contains('max-w-0')) logoRest.style.display = 'none'; }, 500);
+        }
+        
+        // Transition button to close icon
+        if (btn) {
+            btn.innerHTML = '<i class="fas fa-times text-lg"></i>';
+            btn.onclick = window.closeHeaderSearch;
+        }
+        
+        // Show form and animate
+        if (form) {
+            form.classList.remove('hidden');
+            // slight delay to allow display block to take effect before animating max-w
+            requestAnimationFrame(() => {
+                form.classList.remove('opacity-0', 'max-w-0');
+                form.classList.add('opacity-100', 'max-w-full');
+                if (input) input.focus();
+            });
+        }
+    };
+
+    window.closeHeaderSearch = function() {
+        const logoRest = document.getElementById('header-logo-rest');
+        const form = document.getElementById('header-search-form');
+        const btn = document.getElementById('header-search-btn');
+        
+        // Hide form
+        if (form) {
+            form.classList.remove('opacity-100', 'max-w-full');
+            form.classList.add('opacity-0', 'max-w-0');
+            
+            setTimeout(() => {
+                form.classList.add('hidden');
+                // Restore Logo
+                if (logoRest) {
+                    logoRest.style.display = 'inline-block';
+                    void logoRest.offsetWidth; // Force reflow
+                    logoRest.classList.remove('max-w-0', 'opacity-0', 'scale-x-0');
+                    logoRest.classList.add('max-w-[100px]', 'opacity-100', 'scale-x-100');
+                }
+                
+                // Restore button to search icon
+                if (btn) {
+                    btn.innerHTML = '<i class="fas fa-search text-lg"></i>';
+                    btn.onclick = window.openHeaderSearch;
+                }
+            }, 500); // match transition duration
+        }
+    };
 })();

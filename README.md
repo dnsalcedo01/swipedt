@@ -22,7 +22,6 @@ To view the swipe feed, log in with:
 This version is completely serverless and statically hosted. It relies on:
 - HTML/CSS/JavaScript (Vanilla)
 - Tailwind CSS (via CDN)
-- Hammer.js (for touch swipe gestures)
 - LocalStorage (for mock authentication state)
 - FontAwesome (for icons)
 - Google Fonts (Inter)
