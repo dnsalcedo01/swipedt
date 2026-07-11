@@ -259,7 +259,7 @@ function createPostCard(post) {
     card.innerHTML = `
         <div class="flex justify-between items-center p-4 border-b border-slate-100 dark:border-slate-700">
             <div class="flex items-center space-x-3">
-                <a href="#" onclick="alert('Demo: Profile disabled')" class="flex items-center space-x-3 hover:opacity-90 transition">
+                <a href="#" onclick="window.App.alert('Demo', 'Profile views are disabled in the demo.', 'info')" class="flex items-center space-x-3 hover:opacity-90 transition">
                     ${avatarHtml}
                     <div class="flex flex-col text-left">
                         <span class="font-bold text-sm leading-tight text-slate-800 dark:text-slate-100 hover:underline">${post.full_name}${verifiedBadge}</span>
@@ -268,7 +268,7 @@ function createPostCard(post) {
                 </a>
             </div>
             <div class="relative">
-                <button onclick="alert('Demo: Options disabled')" class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition"><i class="fas fa-ellipsis-h"></i></button>
+                <button onclick="window.openPostOptions(${post.id})" class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition"><i class="fas fa-ellipsis-h"></i></button>
             </div>
         </div>
         <div class="flex-1 overflow-y-auto min-h-0 flex flex-col cursor-pointer">
@@ -473,11 +473,55 @@ window.copyLink = function(event, postId) {
         } else if (card && window.showToast) {
             window.showToast('Link copied successfully!', card);
         } else {
-            alert("Link copied to clipboard: " + url);
+            window.App.alert('Success', 'Link copied to clipboard.', 'success');
         }
     }).catch(err => {
         console.error('Failed to copy link: ', err);
     });
+};
+
+window.openPostOptions = function(postId) {
+    const options = [
+        {
+            label: '<i class="fas fa-flag mr-2 w-5 text-center text-slate-400"></i> Report',
+            onClick: () => window.App.alert('Demo', 'Reporting is disabled in the demo.', 'error')
+        }
+    ];
+    if (window.showOptionsModal) window.showOptionsModal(options);
+};
+
+window.openCommentOptions = function() {
+    const options = [
+        {
+            label: '<i class="fas fa-flag mr-2 w-5 text-center text-slate-400"></i> Report',
+            onClick: () => window.App.alert('Demo', 'Reporting is disabled in the demo.', 'error')
+        }
+    ];
+    if (window.showOptionsModal) window.showOptionsModal(options);
+};
+
+window.toggleCommentLike = function(btn) {
+    const icon = btn.querySelector('i');
+    const countSpan = btn.querySelector('span');
+    
+    if (icon.classList.contains('far')) {
+        icon.classList.replace('far', 'fas');
+        btn.classList.replace('text-slate-400', 'text-red-500');
+        
+        icon.style.animation = 'none';
+        icon.offsetHeight; // trigger reflow
+        icon.style.animation = 'pop 0.3s ease-out';
+        
+        if (countSpan) {
+            countSpan.textContent = parseInt(countSpan.textContent) + 1;
+        }
+    } else {
+        icon.classList.replace('fas', 'far');
+        btn.classList.replace('text-red-500', 'text-slate-400');
+        if (countSpan) {
+            countSpan.textContent = parseInt(countSpan.textContent) - 1;
+        }
+    }
 };
 
 window.showToast = function(message, containerElement = null) {
@@ -580,30 +624,30 @@ function renderMockComments(count) {
         
         const commentOptionsHtml = `
             <div class="relative ml-2 flex items-center space-x-1">
-                <button onclick="alert('Demo: Action disabled')" class="text-slate-400 hover:text-red-500 transition flex items-center px-1" title="Like">
+                <button onclick="window.toggleCommentLike(this)" class="text-slate-400 hover:text-red-500 transition flex items-center px-1" title="Like">
                     <i class="far fa-heart text-xs transition-transform duration-150"></i>
                     ${likes > 0 ? `<span class="text-[10px] ml-1 font-semibold">${likes}</span>` : ''}
                 </button>
-                <button onclick="alert('Demo: Action disabled')" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition px-1"><i class="fas fa-ellipsis-h text-xs"></i></button>
+                <button onclick="window.openCommentOptions()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition px-1"><i class="fas fa-ellipsis-h text-xs"></i></button>
             </div>
         `;
         
         commentsList.innerHTML += `
             <div class="space-y-1 mt-4 animate-fade-in">
                 <div class="flex items-start space-x-2">
-                    <a href="#" onclick="alert('Demo: Action disabled')" class="block shrink-0 hover:opacity-80 transition">
+                    <a href="#" onclick="window.App.alert('Demo', 'Profile views are disabled in the demo.', 'info')" class="block shrink-0 hover:opacity-80 transition">
                         <img src="${user.a}" class="w-8 h-8 rounded-full object-cover shadow" alt="Avatar">
                     </a>
                     <div class="flex-1">
                         <div class="flex items-center mt-0.5">
                             <div class="bg-slate-100 dark:bg-slate-700 px-3 py-2 rounded-2xl border border-slate-200/50 dark:border-slate-700/50 w-fit inline-block max-w-full">
-                                <a href="#" onclick="alert('Demo: Action disabled')" class="block font-bold text-sm leading-tight text-slate-800 dark:text-slate-100 hover:underline">${user.f}</a>
+                                <a href="#" onclick="window.App.alert('Demo', 'Profile views are disabled in the demo.', 'info')" class="block font-bold text-sm leading-tight text-slate-800 dark:text-slate-100 hover:underline">${user.f}</a>
                                 <div class="text-[13px] mt-1 text-slate-700 dark:text-slate-200 break-words whitespace-pre-wrap">${text}</div>
                             </div>
                             ${commentOptionsHtml}
                         </div>
                         <div class="flex items-center space-x-2 mt-1 ml-2">
-                            <span class="text-[10px] text-blue-500 hover:underline cursor-pointer font-semibold" onclick="alert('Demo: Action disabled')">Reply</span>
+                            <span class="text-[10px] text-blue-500 hover:underline cursor-pointer font-semibold" onclick="window.App.alert('Demo', 'Replying is disabled in the demo.', 'info')">Reply</span>
                         </div>
                     </div>
                 </div>
@@ -627,10 +671,11 @@ window.postComment = function(event) {
     
     const commentOptionsHtml = `
         <div class="relative ml-2 flex items-center space-x-1">
-            <button class="text-slate-400 hover:text-red-500 transition flex items-center px-1" title="Like">
+            <button onclick="window.toggleCommentLike(this)" class="text-slate-400 hover:text-red-500 transition flex items-center px-1" title="Like">
                 <i class="far fa-heart text-xs transition-transform duration-150"></i>
+                <span class="text-[10px] ml-1 font-semibold">0</span>
             </button>
-            <button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition px-1"><i class="fas fa-ellipsis-h text-xs"></i></button>
+            <button onclick="window.openCommentOptions()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition px-1"><i class="fas fa-ellipsis-h text-xs"></i></button>
         </div>
     `;
     
