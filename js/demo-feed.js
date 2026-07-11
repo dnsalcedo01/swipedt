@@ -332,7 +332,7 @@ function createPostCard(post) {
                 <button onclick="${post.user_id === 999 ? "window.App.alert('Demo', 'This is a demo. Options are disabled.', 'info')" : `window.openPostOptions(${post.id})`}" class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition"><i class="fas fa-ellipsis-h"></i></button>
             </div>
         </div>
-        <div class="flex-1 overflow-y-auto min-h-0 flex flex-col cursor-pointer">
+        <div class="flex-1 overflow-y-auto min-h-0 flex flex-col cursor-pointer" onclick="${post.user_id === 999 ? "window.App.alert('Demo', 'This is a demo post. Interactions are disabled.', 'info')" : `window.location.href='post.html?id=${post.id}'`}">
             <div class="px-4 pt-4 pb-2 text-slate-800 dark:text-slate-200 break-words leading-relaxed text-sm shrink-0 block hover:opacity-90 transition">
                 ${displayContent}
             </div>
