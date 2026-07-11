@@ -396,4 +396,54 @@
             }, 500); // match transition duration
         }
     };
+    window.openCreatePostModal = function() {
+        const modal = document.getElementById('global-create-post-modal');
+        if (modal) modal.classList.remove('hidden');
+    };
+
+    window.closeCreatePostModal = async function(force = false) {
+        const textEl = document.getElementById('post-text');
+        const fileEl = document.getElementById('post-image-file');
+        
+        if (!force) {
+            const text = textEl ? textEl.value.trim() : '';
+            const file = fileEl && fileEl.files ? fileEl.files.length > 0 : false;
+            
+            if (text || file) {
+                const confirmed = await window.App.confirm('Discard Post?', 'You have unsaved changes. Are you sure you want to discard them?');
+                if (!confirmed) return;
+            }
+        }
+        
+        if (textEl) textEl.value = '';
+        window.clearPostImagePreview();
+        
+        const modal = document.getElementById('global-create-post-modal');
+        if (modal) modal.classList.add('hidden');
+    };
+
+    window.previewPostImage = function(input) {
+        const container = document.getElementById('post-image-preview-container');
+        const preview = document.getElementById('post-image-preview');
+        if (input.files && input.files[0]) {
+            let file = input.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                container.classList.remove('hidden');
+            }
+            reader.readAsDataURL(file);
+        }
+    };
+
+    window.clearPostImagePreview = function() {
+        const event = window.event;
+        if (event) event.stopPropagation();
+        const container = document.getElementById('post-image-preview-container');
+        const preview = document.getElementById('post-image-preview');
+        const fileInput = document.getElementById('post-image-file');
+        if (fileInput) fileInput.value = '';
+        if (preview) preview.src = '';
+        if (container) container.classList.add('hidden');
+    };
 })();

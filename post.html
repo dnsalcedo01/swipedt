@@ -41,7 +41,7 @@
 
 <!-- Top Navigation Header -->
 <header class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-50 shadow-sm transition-colors duration-300" style="padding-top: env(safe-area-inset-top, 0px);">
-    <div class="flex max-w-7xl mx-auto w-full px-4 sm:px-6 items-center justify-between relative h-[56px]">
+    <div class="flex max-w-7xl mx-auto w-full px-4 sm:px-6 items-center relative h-[56px]">
         
         <div class="flex items-center w-auto max-w-[calc(100%-100px)] md:max-w-none md:w-64 flex-shrink-0 z-10 transition-all duration-500" id="header-logo-container">
             <a href="home.html" id="header-logo-text" class="text-xl sm:text-2xl font-black tracking-tight bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent inline-flex items-end transition-all duration-500 whitespace-nowrap overflow-hidden">
@@ -75,7 +75,7 @@
             </a>
         </nav>
 
-        <div class="flex items-center space-x-1 sm:space-x-3 z-10">
+        <div class="flex items-center space-x-1 sm:space-x-3 z-10 absolute right-4 sm:right-6 bg-white dark:bg-slate-800 pl-2">
             <button onclick="window.App.alert('Demo', 'Search is disabled in the demo.', 'info')" class="md:hidden p-2 text-slate-500 hover:text-blue-500 dark:text-slate-400 dark:hover:text-blue-400 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition" title="Search">
                 <i class="fas fa-search text-lg"></i>
             </button>
@@ -115,7 +115,61 @@
     </a>
 </nav>
 
-<main class="flex-1 max-w-lg md:max-w-xl mx-auto w-full px-4 pt-4 pb-20 md:pb-6 flex flex-col relative">
+<!-- App Layout Wrapper -->
+<div class="flex flex-1 max-w-7xl mx-auto w-full relative">
+    
+    <!-- Left Sidebar (Desktop/Tablet) -->
+    <aside class="hidden md:flex flex-col w-64 flex-shrink-0 p-6 sticky top-[68px] h-[calc(100vh-68px)] overflow-y-auto no-scrollbar">
+        
+        <h3 class="text-sm font-semibold text-slate-500 dark:text-slate-400 mb-4 uppercase tracking-wider">Shortcuts</h3>
+        <nav class="flex flex-col space-y-2 mb-8">
+            <a href="#" onclick="window.App.alert('Demo', 'Feature disabled in the demo.', 'info'); return false;" class="flex items-center space-x-3 p-2 rounded-lg text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800 transition">
+                <div class="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-500 dark:text-blue-400">
+                    <i class="fas fa-bookmark"></i>
+                </div>
+                <span class="font-medium">Saved Posts</span>
+            </a>
+            <a href="#" onclick="window.App.alert('Demo', 'Feature disabled in the demo.', 'info'); return false;" class="flex items-center space-x-3 p-2 rounded-lg text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800 transition">
+                <div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-slate-500 dark:text-slate-400">
+                    <i class="fas fa-cog"></i>
+                </div>
+                <span class="font-medium">Settings</span>
+            </a>
+            <a href="help.html" class="flex items-center space-x-3 p-2 rounded-lg text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800 transition">
+                <div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-slate-500 dark:text-slate-400">
+                    <i class="fas fa-life-ring"></i>
+                </div>
+                <span class="font-medium">Help Center</span>
+            </a>
+            <a href="#" onclick="window.App.alert('Demo', 'Feature disabled in the demo.', 'info'); return false;" class="flex items-center space-x-3 p-2 rounded-lg text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800 transition">
+                <div class="w-8 h-8 rounded-full bg-cyan-100 dark:bg-cyan-900/40 flex items-center justify-center">
+                    <i class="fas fa-check-circle text-cyan-500 text-lg"></i>
+                </div>
+                <span class="font-medium">Get Verified</span>
+            </a>
+            <div class="flex items-center space-x-3 p-2 rounded-lg text-slate-400 dark:text-slate-600 cursor-not-allowed transition">
+                <div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800/50 flex items-center justify-center text-slate-400 dark:text-slate-600">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <span class="font-medium">Admin Dashboard</span>
+            </div>
+            <a href="community_guidelines.html" class="flex items-center space-x-3 p-2 rounded-lg text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800 transition">
+                <div class="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center text-indigo-500 dark:text-indigo-400">
+                    <i class="fas fa-book-open"></i>
+                </div>
+                <span class="font-medium">Community Guidelines</span>
+            </a>
+        </nav>
+
+        <div class="mt-auto pt-6 text-xs text-slate-400 dark:text-slate-500 flex flex-wrap gap-x-3 gap-y-2">
+            <a href="privacy.html" class="hover:underline">Privacy</a>
+            <a href="terms.html" class="hover:underline">Terms</a>
+            <a href="cookies.html" class="hover:underline">Cookies</a>
+            <span>Swipedt © 2026</span>
+        </div>
+    </aside>
+
+<main class="flex-1 max-w-lg md:max-w-xl mx-auto w-full px-4 pt-3 pb-20 md:pb-6 flex flex-col relative">
     
     <!-- Single Post Area -->
     <div id="single-post-container" class="w-full">
@@ -128,6 +182,42 @@
         <!-- Post card injected here by demo-feed.js -->
     </div>
 </main>
+</div>
+
+<!-- Global Create Post Modal -->
+<div id="global-create-post-modal" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-[9999] flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl w-full max-w-lg overflow-hidden transform transition-all">
+        <!-- Modal Header -->
+        <div class="flex justify-between items-center px-6 py-4 border-b border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50">
+            <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100">Create Post</h3>
+            <button type="button" onclick="closeCreatePostModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-2"><i class="fas fa-times text-lg"></i></button>
+        </div>
+        
+        <form id="global-create-post-form" class="p-6 space-y-4">
+            <div class="flex items-start space-x-3">
+                <div class="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold" style="background-color: #3b82f6">D</div>
+                <textarea id="post-text" rows="4" class="flex-1 border-0 bg-transparent focus:ring-0 focus:outline-none dark:text-white text-base resize-none" placeholder="What's happening? Tell the world..."></textarea>
+            </div>
+            
+            <!-- Image Preview -->
+            <div id="post-image-preview-container" class="hidden relative rounded-xl overflow-hidden max-h-64 border border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50">
+                <img id="post-image-preview" class="mx-auto max-h-60 object-contain rounded-lg shadow-sm" src="" alt="Post image preview">
+                <button type="button" onclick="clearPostImagePreview()" class="absolute top-2 right-2 bg-slate-900/80 hover:bg-slate-900 text-white rounded-full w-8 h-8 flex items-center justify-center text-xs shadow-md transition"><i class="fas fa-times"></i></button>
+            </div>
+
+            <!-- Footer Toolbar -->
+            <div class="flex justify-between items-center pt-3 border-t border-slate-100 dark:border-slate-700">
+                <div class="flex items-center space-x-2">
+                    <button type="button" onclick="document.getElementById('post-image-file').click()" class="w-10 h-10 flex items-center justify-center text-blue-500 hover:bg-blue-50 dark:hover:bg-slate-700/50 rounded-full transition" title="Add Photo">
+                        <i class="fas fa-image text-xl"></i>
+                    </button>
+                    <input type="file" id="post-image-file" class="hidden" accept="image/*" onchange="previewPostImage(this)">
+                </div>
+                <button type="submit" class="px-5 py-2 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold rounded-xl shadow-md transition">Post</button>
+            </div>
+        </form>
+    </div>
+</div>
 
 <script src="js/demo-dialogs.js"></script>
 <script src="js/demo-feed.js"></script>

@@ -111,19 +111,79 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         initDemoFeed();
     }
+
+    const createPostForm = document.getElementById('global-create-post-form');
+    if (createPostForm) {
+        createPostForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const textEl = document.getElementById('post-text');
+            const previewEl = document.getElementById('post-image-preview');
+            const text = textEl ? textEl.value.trim() : '';
+            const img = previewEl && previewEl.src && !previewEl.src.endsWith(window.location.host + '/') && previewEl.src !== window.location.href ? previewEl.src : null;
+
+            if (!text && !img) {
+                window.App.alert('Error', 'Please enter some text or add an image.', 'danger');
+                return;
+            }
+
+            const newPost = {
+                id: Math.floor(Math.random() * 100000) + 1000,
+                user_id: 999,
+                post_hash: 'demo' + Date.now(),
+                username: 'demo_user',
+                full_name: 'Demo User',
+                avatar_color: '#3b82f6',
+                avatar_url: 'https://ui-avatars.com/api/?name=Demo+User&background=3b82f6&color=fff',
+                text_content: text,
+                image_url: img,
+                created_at: new Date().toISOString(),
+                like_count: 0,
+                comment_count: 0,
+                recent_liker: null,
+                second_liker: null,
+                user_liked: 0,
+                user_saved: 0,
+                is_following: 1,
+                is_badge_verified: 1
+            };
+
+            window.allDemoPosts.unshift(newPost);
+
+            if (!document.getElementById('single-post-container')) {
+                // Truly inject into the news feed dynamically
+                if (activeCard) {
+                    const currentPostId = parseInt(activeCard.dataset.postId);
+                    const currentPost = window.allDemoPosts.find(p => p.id === currentPostId);
+                    if (currentPost) preloadedPosts.unshift(currentPost);
+                    activeCard.remove();
+                    activeCard = null;
+                }
+
+                preloadedPosts.unshift(newPost);
+
+                const noPostsMsg = document.getElementById('no-posts-message');
+                if (noPostsMsg) noPostsMsg.classList.add('hidden');
+
+                showNextPost();
+            }
+
+            window.closeCreatePostModal(true);
+            window.App.alert('Success', 'Your post has been published! (Demo only)', 'success');
+        });
+    }
 });
 
 function initDemoFeed() {
     window.switchFeed('suggested');
 }
 
-window.switchFeed = function(type) {
+window.switchFeed = function (type) {
     if (isAnimating) return;
-    
+
     // Update active tab styling
     const suggestedTab = document.getElementById('tab-suggested');
     const followingTab = document.getElementById('tab-following');
-    
+
     if (suggestedTab && followingTab) {
         if (type === 'suggested') {
             suggestedTab.className = "feed-tab text-base font-bold pb-2 border-b-2 border-blue-500 text-slate-800 dark:text-slate-100 transition-colors";
@@ -138,7 +198,7 @@ window.switchFeed = function(type) {
     preloadedPosts = window.allDemoPosts.filter(p => {
         if (type === 'suggested') return p.is_following === 0;
         return p.is_following === 1;
-    }).map(p => ({...p})); // deep copy so we don't mutate original objects directly when swiping
+    }).map(p => ({ ...p })); // deep copy so we don't mutate original objects directly when swiping
 
     // Clear feed
     if (activeCard) {
@@ -146,13 +206,13 @@ window.switchFeed = function(type) {
         activeCard = null;
     }
     document.querySelectorAll('.post-card').forEach(c => c.remove());
-    
+
     const container = document.getElementById('feed-container');
     if (container) {
         const noPostsMsg = document.getElementById('no-posts-message');
         if (noPostsMsg) noPostsMsg.classList.add('hidden');
     }
-    
+
     showNextPost();
 };
 
@@ -169,7 +229,7 @@ function showNextPost() {
     const card = createPostCard(post);
     document.getElementById('feed-container').appendChild(card);
     activeCard = card;
-    
+
     if (typeof toggleSwipeOverlays === 'function') {
         toggleSwipeOverlays(true);
         // Setup ResizeObserver to track image loading height changes
@@ -181,22 +241,22 @@ function showNextPost() {
     }
 }
 
-window.toggleSwipeOverlays = function(show) {
+window.toggleSwipeOverlays = function (show) {
     const swipeLeft = document.getElementById('desktop-swipe-left');
     const swipeRight = document.getElementById('desktop-swipe-right');
     if (swipeLeft && swipeRight) {
         if (show) {
             swipeLeft.style.display = '';
             swipeRight.style.display = '';
-            
+
             if (activeCard) {
                 const container = document.getElementById('feed-container');
                 const cardTop = container.offsetTop + activeCard.offsetTop;
                 const cardHeight = activeCard.offsetHeight;
-                
+
                 swipeLeft.style.top = cardTop + 'px';
                 swipeLeft.style.height = cardHeight + 'px';
-                
+
                 swipeRight.style.top = cardTop + 'px';
                 swipeRight.style.height = cardHeight + 'px';
             }
@@ -238,9 +298,10 @@ function createPostCard(post) {
     const card = document.createElement('div');
     card.className = 'post-card w-full bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-xl overflow-hidden transition-all duration-300 flex flex-col absolute swipe-card select-none max-h-[calc(100%-1rem)] md:max-h-[calc(100%-2rem)] h-auto';
     card.style.zIndex = 10;
+    card.dataset.postId = post.id;
 
     const displayContent = post.text_content.replace(/(^|\s)#(\w+)/g, '$1<span class="text-blue-500 font-medium">#$2</span>').replace(/(^|\s)@(\w+)/g, '$1<span class="text-blue-500 font-medium">@$2</span>');
-    
+
     const imageHtml = post.image_url ? `
         <div class="px-4 pb-4 flex-1 min-h-[100px] flex flex-col overflow-hidden relative group image-wrapper-target">
             <div class="block w-full h-full overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-700/80 cursor-pointer">
@@ -252,7 +313,7 @@ function createPostCard(post) {
 
     const avatarHtml = `<img src="${post.avatar_url}" draggable="false" class="w-10 h-10 shrink-0 rounded-full object-cover shadow" alt="Avatar">`;
     const verifiedBadge = post.is_badge_verified ? '<span class="verified-badge-icon ml-[1px]" oncontextmenu="return false;" title="Verified User"></span>' : '';
-    const followBtnHtml = post.is_following 
+    const followBtnHtml = post.is_following
         ? ` • <button type="button" class="follow-btn-${post.user_id} text-slate-400 hover:text-slate-500 font-bold transition-colors" onclick="window.toggleFollow(event, this, ${post.user_id})">Following</button>`
         : ` • <button type="button" class="follow-btn-${post.user_id} text-blue-500 hover:text-blue-600 font-bold transition-colors" onclick="window.toggleFollow(event, this, ${post.user_id})">Follow</button>`;
 
@@ -268,7 +329,7 @@ function createPostCard(post) {
                 </a>
             </div>
             <div class="relative">
-                <button onclick="window.openPostOptions(${post.id})" class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition"><i class="fas fa-ellipsis-h"></i></button>
+                <button onclick="${post.user_id === 999 ? "window.App.alert('Demo', 'This is a demo. Options are disabled.', 'info')" : `window.openPostOptions(${post.id})`}" class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition"><i class="fas fa-ellipsis-h"></i></button>
             </div>
         </div>
         <div class="flex-1 overflow-y-auto min-h-0 flex flex-col cursor-pointer">
@@ -281,18 +342,18 @@ function createPostCard(post) {
             </div>
         </div>
         <div class="flex justify-between items-center px-6 py-3 border-t border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50">
-            <button class="flex items-center space-x-2 transition ${post.user_liked ? 'text-red-500 dark:text-red-400' : 'text-slate-400 hover:text-red-500'}" onclick="window.toggleLike(event, ${post.id}, this)">
+            <button class="flex items-center space-x-2 transition ${post.user_liked ? 'text-red-500 dark:text-red-400' : 'text-slate-400 hover:text-red-500'}" onclick="${post.user_id === 999 ? "window.App.alert('Demo', 'This is a demo post. Interactions are disabled.', 'info')" : `window.toggleLike(event, ${post.id}, this)`}">
                 <i class="${post.user_liked ? 'fas' : 'far'} fa-heart text-xl"></i>
                 <span class="text-xs font-bold">${post.like_count}</span>
             </button>
-            <button class="flex items-center space-x-2 text-slate-400 hover:text-blue-500 transition" onclick="window.location.href='post.html?id=${post.id}'">
+            <button class="flex items-center space-x-2 text-slate-400 hover:text-blue-500 transition" onclick="${post.user_id === 999 ? "window.App.alert('Demo', 'This is a demo post. Interactions are disabled.', 'info')" : `window.location.href='post.html?id=${post.id}'`}">
                 <i class="fas fa-comment text-lg"></i>
                 <span class="text-xs font-bold">${post.comment_count}</span>
             </button>
-            <button class="flex items-center space-x-2 text-slate-400 hover:text-green-500 transition" onclick="window.copyLink(event, ${post.id})">
+            <button class="flex items-center space-x-2 text-slate-400 hover:text-green-500 transition" onclick="${post.user_id === 999 ? "window.App.alert('Demo', 'This is a demo post. Interactions are disabled.', 'info')" : `window.copyLink(event, ${post.id})`}">
                 <i class="fas fa-link text-lg"></i>
             </button>
-            <button class="flex items-center space-x-2 transition ${post.user_saved ? 'text-yellow-500 dark:text-yellow-400' : 'text-slate-400 hover:text-yellow-500'}" onclick="window.toggleSave(event, ${post.id}, this)">
+            <button class="flex items-center space-x-2 transition ${post.user_saved ? 'text-yellow-500 dark:text-yellow-400' : 'text-slate-400 hover:text-yellow-500'}" onclick="${post.user_id === 999 ? "window.App.alert('Demo', 'This is a demo post. Interactions are disabled.', 'info')" : `window.toggleSave(event, ${post.id}, this)`}">
                 <i class="${post.user_saved ? 'fas' : 'far'} fa-bookmark text-lg"></i>
             </button>
         </div>
@@ -360,12 +421,12 @@ function setupSwipe(card) {
     window.addEventListener('touchend', endDrag);
 }
 
-window.forceSwipe = function(direction) {
+window.forceSwipe = function (direction) {
     if (!activeCard || isAnimating) return;
-    
+
     isAnimating = true;
     const dirVal = direction === 'right' ? 1000 : -1000;
-    
+
     activeCard.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
     activeCard.style.transform = `translateX(${dirVal}px) rotate(${dirVal * 0.05}deg)`;
     activeCard.style.opacity = '0';
@@ -377,17 +438,17 @@ window.forceSwipe = function(direction) {
     }, 300);
 };
 
-window.getVerifiedBadgeSvg = function(extraClass = 'ml-[1px]', isStatic = false) {
+window.getVerifiedBadgeSvg = function (extraClass = 'ml-[1px]', isStatic = false) {
     return `<span class="verified-badge-icon ${extraClass}" oncontextmenu="return false;" title="Verified User: This account represents a notable public figure or creator."></span>`;
 };
 
 // --- Mock Interaction Logic ---
 
-window.toggleFollow = function(event, btn, userId) {
-    if(event) { event.preventDefault(); event.stopPropagation(); }
-    
+window.toggleFollow = function (event, btn, userId) {
+    if (event) { event.preventDefault(); event.stopPropagation(); }
+
     const isFollowing = btn.textContent.trim() === 'Following';
-    
+
     // Update data state so next cards by this user reflect it
     window.allDemoPosts.forEach(p => {
         if (p.user_id === userId) {
@@ -414,12 +475,12 @@ window.toggleFollow = function(event, btn, userId) {
     });
 };
 
-window.toggleLike = function(event, postId, btn) {
-    if(event) { event.preventDefault(); event.stopPropagation(); }
+window.toggleLike = function (event, postId, btn) {
+    if (event) { event.preventDefault(); event.stopPropagation(); }
     let isLiked = btn.classList.contains('text-red-500');
     let span = btn.querySelector('span');
     let count = parseInt(span.textContent, 10);
-    
+
     if (isLiked) {
         btn.classList.remove('text-red-500', 'dark:text-red-400');
         btn.classList.add('text-slate-400', 'hover:text-red-500');
@@ -430,7 +491,7 @@ window.toggleLike = function(event, postId, btn) {
         btn.classList.add('text-red-500', 'dark:text-red-400');
         btn.querySelector('i').classList.replace('far', 'fas');
         span.textContent = count + 1;
-        
+
         const bigHeart = document.getElementById(`big-heart-${postId}`);
         if (bigHeart) {
             bigHeart.style.animation = 'none';
@@ -440,10 +501,10 @@ window.toggleLike = function(event, postId, btn) {
     }
 };
 
-window.toggleSave = function(event, postId, btn) {
-    if(event) { event.preventDefault(); event.stopPropagation(); }
+window.toggleSave = function (event, postId, btn) {
+    if (event) { event.preventDefault(); event.stopPropagation(); }
     let isSaved = btn.classList.contains('text-yellow-500');
-    
+
     if (isSaved) {
         btn.classList.remove('text-yellow-500', 'dark:text-yellow-400');
         btn.classList.add('text-slate-400', 'hover:text-yellow-500');
@@ -452,7 +513,7 @@ window.toggleSave = function(event, postId, btn) {
         btn.classList.remove('text-slate-400', 'hover:text-yellow-500');
         btn.classList.add('text-yellow-500', 'dark:text-yellow-400');
         btn.querySelector('i').classList.replace('far', 'fas');
-        
+
         const bigSave = document.getElementById(`big-save-${postId}`);
         if (bigSave) {
             bigSave.style.animation = 'none';
@@ -462,8 +523,8 @@ window.toggleSave = function(event, postId, btn) {
     }
 };
 
-window.copyLink = function(event, postId) {
-    if(event) { event.preventDefault(); event.stopPropagation(); }
+window.copyLink = function (event, postId) {
+    if (event) { event.preventDefault(); event.stopPropagation(); }
     const url = `${window.location.origin}${window.location.pathname.replace(/\/[^/]*$/, '/')}post.html?id=${postId}`;
     navigator.clipboard.writeText(url).then(() => {
         const card = document.querySelector(`.post-card`);
@@ -480,7 +541,7 @@ window.copyLink = function(event, postId) {
     });
 };
 
-window.openPostOptions = function(postId) {
+window.openPostOptions = function (postId) {
     const options = [
         {
             label: '<i class="fas fa-flag mr-2 w-5 text-center text-slate-400"></i> Report',
@@ -490,7 +551,7 @@ window.openPostOptions = function(postId) {
     if (window.showOptionsModal) window.showOptionsModal(options);
 };
 
-window.openCommentOptions = function() {
+window.openCommentOptions = function () {
     const options = [
         {
             label: '<i class="fas fa-flag mr-2 w-5 text-center text-slate-400"></i> Report',
@@ -500,18 +561,18 @@ window.openCommentOptions = function() {
     if (window.showOptionsModal) window.showOptionsModal(options);
 };
 
-window.toggleCommentLike = function(btn) {
+window.toggleCommentLike = function (btn) {
     const icon = btn.querySelector('i');
     const countSpan = btn.querySelector('span');
-    
+
     if (icon.classList.contains('far')) {
         icon.classList.replace('far', 'fas');
         btn.classList.replace('text-slate-400', 'text-red-500');
-        
+
         icon.style.animation = 'none';
         icon.offsetHeight; // trigger reflow
         icon.style.animation = 'pop 0.3s ease-out';
-        
+
         if (countSpan) {
             countSpan.textContent = parseInt(countSpan.textContent) + 1;
         }
@@ -524,7 +585,7 @@ window.toggleCommentLike = function(btn) {
     }
 };
 
-window.showToast = function(message, containerElement = null) {
+window.showToast = function (message, containerElement = null) {
     if (containerElement) {
         containerElement.style.position = 'relative';
         const toast = document.createElement('div');
@@ -545,16 +606,16 @@ window.showToast = function(message, containerElement = null) {
 };
 
 // --- Single Post Logic ---
-window.initSinglePost = function() {
+window.initSinglePost = function () {
     const params = new URLSearchParams(window.location.search);
     const postId = parseInt(params.get('id'));
     const post = window.allDemoPosts.find(p => p.id === postId) || window.allDemoPosts[0];
-    
+
     if (!post) {
         document.getElementById('single-post-container').innerHTML = '<p class="p-4 text-center">Post not found.</p>';
         return;
     }
-    
+
     // Create card without swipe
     const card = createPostCard(post);
     card.classList.remove('absolute', 'swipe-card', 'max-h-[calc(100%-1rem)]', 'md:max-h-[calc(100%-2rem)]');
@@ -562,7 +623,7 @@ window.initSinglePost = function() {
     // Remove swipe event listeners attached by createPostCard by cloning and replacing
     const cardClone = card.cloneNode(true);
     document.getElementById('single-post-container').appendChild(cardClone);
-    
+
     // Attach single post specific logic
     cardClone.querySelectorAll('button[onclick*="toggleLike"]').forEach(btn => {
         btn.setAttribute('onclick', `window.toggleLike(event, ${post.id}, this)`);
@@ -570,7 +631,7 @@ window.initSinglePost = function() {
     cardClone.querySelectorAll('button[onclick*="toggleSave"]').forEach(btn => {
         btn.setAttribute('onclick', `window.toggleSave(event, ${post.id}, this)`);
     });
-    
+
     // Add the comments section inside the card
     const commentsHtml = `
         <div class="comments-section border-t border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 max-h-60 flex flex-col" id="comments-${post.id}">
@@ -591,19 +652,19 @@ window.initSinglePost = function() {
 function renderMockComments(count) {
     const commentsList = document.getElementById('comments-list');
     commentsList.innerHTML = '';
-    
+
     if (count === 0) {
         commentsList.innerHTML = '<p class="text-xs text-slate-400 text-center py-4">No comments yet. Be the first!</p>';
         return;
     }
-    
+
     const mockUsers = [
         { u: 'traveler_joe', f: 'Joe The Explorer', a: 'https://ui-avatars.com/api/?name=Joe+Explorer&background=3b82f6&color=fff' },
         { u: 'tech_guru', f: 'Alex Tech', a: 'https://ui-avatars.com/api/?name=Alex+Tech&background=ef4444&color=fff' },
         { u: 'foodie_anna', f: 'Anna Foodie', a: 'https://ui-avatars.com/api/?name=Anna+Foodie&background=10b981&color=fff' },
         { u: 'urban_snaps', f: 'City Snaps', a: 'https://ui-avatars.com/api/?name=City+Snaps&background=f59e0b&color=fff' }
     ];
-    
+
     const mockTexts = [
         "This is amazing!",
         "Love the aesthetic here 😍",
@@ -614,14 +675,14 @@ function renderMockComments(count) {
         "So cool!",
         "Great post! 🔥"
     ];
-    
+
     const renderCount = Math.min(count, 5); // cap at 5 so it doesn't get crazy
-    
+
     for (let i = 0; i < renderCount; i++) {
         const user = mockUsers[Math.floor(Math.random() * mockUsers.length)];
         const text = mockTexts[Math.floor(Math.random() * mockTexts.length)];
         const likes = Math.floor(Math.random() * 20);
-        
+
         const commentOptionsHtml = `
             <div class="relative ml-2 flex items-center space-x-1">
                 <button onclick="window.toggleCommentLike(this)" class="text-slate-400 hover:text-red-500 transition flex items-center px-1" title="Like">
@@ -631,7 +692,7 @@ function renderMockComments(count) {
                 <button onclick="window.openCommentOptions()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition px-1"><i class="fas fa-ellipsis-h text-xs"></i></button>
             </div>
         `;
-        
+
         commentsList.innerHTML += `
             <div class="space-y-1 mt-4 animate-fade-in">
                 <div class="flex items-start space-x-2">
@@ -656,19 +717,19 @@ function renderMockComments(count) {
     }
 }
 
-window.postComment = function(event) {
-    if(event) event.preventDefault();
+window.postComment = function (event) {
+    if (event) event.preventDefault();
     const input = document.getElementById('comment-input');
     const text = input.value.trim();
-    if(!text) return;
-    
+    if (!text) return;
+
     const commentsList = document.getElementById('comments-list');
-    
+
     // Remove "No comments" text if it's the first comment
     if (commentsList.innerHTML.includes('No comments yet')) {
         commentsList.innerHTML = '';
     }
-    
+
     const commentOptionsHtml = `
         <div class="relative ml-2 flex items-center space-x-1">
             <button onclick="window.toggleCommentLike(this)" class="text-slate-400 hover:text-red-500 transition flex items-center px-1" title="Like">
@@ -678,7 +739,7 @@ window.postComment = function(event) {
             <button onclick="window.openCommentOptions()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition px-1"><i class="fas fa-ellipsis-h text-xs"></i></button>
         </div>
     `;
-    
+
     const newComment = document.createElement('div');
     newComment.className = 'space-y-1 mt-4 animate-fade-in';
     newComment.innerHTML = `
@@ -704,7 +765,7 @@ window.postComment = function(event) {
     input.value = '';
     // Scroll to bottom so the user sees their new comment
     commentsList.scrollTop = commentsList.scrollHeight;
-    
+
     // Update count in card
     const commentCountSpan = document.querySelector('button[onclick*="post.html"] span');
     if (commentCountSpan) {
