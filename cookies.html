@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Cookie Policy - Swipedt.</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { darkMode: 'class', theme: { extend: {} } }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/theme.js"></script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
+
+<header class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-50 shadow-sm transition-colors duration-300" style="padding-top: env(safe-area-inset-top, 0px);">
+    <div class="flex max-w-7xl mx-auto w-full px-4 sm:px-6 items-center justify-between h-[56px]">
+        <a href="index.html" class="text-xl sm:text-2xl font-black tracking-tight bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent inline-block">
+            Swipedt.
+        </a>
+        <div class="flex items-center space-x-3">
+            <button id="theme-toggle" class="p-2 text-slate-500 hover:text-blue-500 dark:text-slate-400 dark:hover:text-blue-400 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition" title="Toggle Theme">
+                <i class="fas fa-moon text-lg"></i>
+            </button>
+            <a href="index.html" class="hidden sm:flex items-center space-x-2 px-3 py-1.5 text-sm font-semibold text-slate-600 hover:text-blue-500 dark:text-slate-300 dark:hover:text-blue-400 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition border border-slate-200 dark:border-slate-700" title="Back to App">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back</span>
+            </a>
+            <a href="index.html" class="sm:hidden p-2 text-slate-500 hover:text-blue-500 dark:text-slate-400 dark:hover:text-blue-400 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition" title="Back to App">
+                <i class="fas fa-arrow-left text-lg"></i>
+            </a>
+        </div>
+    </div>
+</header>
+
+<main class="flex-1 w-full max-w-4xl mx-auto flex flex-col p-6 relative" style="padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-gradient-to-b from-blue-500/10 to-transparent blur-3xl pointer-events-none -z-10"></div>
+    <div class="absolute top-40 -left-20 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl pointer-events-none -z-10"></div>
+    <div class="absolute top-80 -right-20 w-72 h-72 bg-pink-500/10 rounded-full blur-3xl pointer-events-none -z-10"></div>
+
+    <div class="text-center mb-12 mt-4 md:mt-10">
+        <div class="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-gradient-to-tr from-blue-500 to-purple-600 text-white shadow-xl shadow-blue-500/30 mb-6 transform hover:scale-105 transition duration-300">
+            <i class="fas fa-cookie-bite text-3xl"></i>
+        </div>
+        <h1 class="text-4xl md:text-5xl font-black tracking-tight text-slate-800 dark:text-white mb-4">
+            Cookie Policy
+        </h1>
+        <p class="text-lg text-slate-500 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
+            We only use what we absolutely need. No tracking, no analytics, no third-party ad networks.
+        </p>
+    </div>
+
+    <div class="space-y-8">
+        <div class="bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm">
+            <div class="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-500/10 text-blue-500 flex items-center justify-center text-xl mb-4">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-4">Essential Cookies Only</h2>
+            <p class="text-slate-500 dark:text-slate-400 leading-relaxed mb-4">
+                Our platform uses highly restricted, strictly essential browser technologies. We utilize standard session cookies solely to keep you securely logged into your account. Without this, the application cannot function securely.
+            </p>
+        </div>
+
+        <div class="bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm">
+            <div class="w-12 h-12 rounded-2xl bg-purple-50 dark:bg-purple-500/10 text-purple-500 flex items-center justify-center text-xl mb-4">
+                <i class="fas fa-palette"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-4">Local Storage for Preferences</h2>
+            <p class="text-slate-500 dark:text-slate-400 leading-relaxed mb-4">
+                Instead of intrusive cookies, we use your browser's local storage to remember your UI preferences, specifically whether you prefer 'dark' or 'light' mode. This data never leaves your device and is never sent to our servers.
+            </p>
+        </div>
+
+        <div class="bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm">
+            <div class="w-12 h-12 rounded-2xl bg-green-50 dark:bg-green-500/10 text-green-500 flex items-center justify-center text-xl mb-4">
+                <i class="fas fa-user-shield"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-4">No Third-Party Trackers</h2>
+            <p class="text-slate-500 dark:text-slate-400 leading-relaxed mb-4">
+                As stated in our Privacy Policy, we do not run advertisements. Therefore, we do not utilize third-party cookies, tracking pixels, or cross-site fingerprinting scripts. Your digital footprint remains yours alone.
+            </p>
+        </div>
+
+        <div class="bg-gradient-to-br from-blue-500 to-purple-600 p-[2px] rounded-3xl shadow-lg">
+            <div class="bg-white dark:bg-slate-800 p-8 rounded-[22px]">
+                <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-4">Questions?</h2>
+                <p class="text-slate-500 dark:text-slate-400 leading-relaxed mb-4">
+                    For inquiries related to our strict cookie usage, contact our privacy team:
+                </p>
+                <a href="mailto:privacy@swipedt.site" class="inline-flex items-center space-x-2 text-blue-500 hover:text-blue-600 font-bold transition">
+                    <i class="fas fa-envelope"></i>
+                    <span>privacy@swipedt.site</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</main>
+<script>
+    // Theme toggle setup specifically for these static pages
+    document.getElementById('theme-toggle')?.addEventListener('click', function() {
+        if (document.documentElement.classList.contains('dark')) {
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('swipedt_theme', 'light');
+        } else {
+            document.documentElement.classList.add('dark');
+            localStorage.setItem('swipedt_theme', 'dark');
+        }
+    });
+</script>
+</body>
+</html>

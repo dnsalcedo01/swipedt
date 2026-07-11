@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <!-- <link rel="manifest" href="manifest.json"> -->
+    <meta name="theme-color" content="#3b82f6">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+    <title>Login - Swipedt.</title>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            future: { hoverOnlyWhenSupported: true },
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes gradientLoop {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+        @keyframes initialGlow {
+            0% { filter: drop-shadow(0 0 12px rgba(168, 85, 247, 0.25)) drop-shadow(0 0 24px rgba(59, 130, 246, 0.15)); transform: scale(1.02); }
+            100% { filter: drop-shadow(0 1px 2px rgba(0,0,0, 0.05)); transform: scale(1); }
+        }
+        .text-gradient-loop {
+            background: linear-gradient(to right, 
+                #22d3ee 0%, 
+                #3b82f6 16.66%, 
+                #9333ea 33.33%, 
+                #22d3ee 50%, 
+                #3b82f6 66.66%, 
+                #9333ea 83.33%, 
+                #22d3ee 100%
+            );
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: initialGlow 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards, gradientLoop 4s ease-out forwards;
+        }
+    </style>
+    <script src="js/theme.js"></script>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Global Style (Inter font, iOS fixes) -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-300 font-sans relative overflow-x-hidden">
+    
+    <!-- Premium Background Glows -->
+    <div class="fixed top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
+        <div class="absolute -top-[10%] -left-[10%] w-[50vw] h-[50vw] bg-purple-500/10 dark:bg-purple-600/15 rounded-full blur-[100px] animate-[pulse_10s_ease-in-out_infinite]"></div>
+        <div class="absolute top-[20%] -right-[10%] w-[40vw] h-[40vw] bg-blue-500/10 dark:bg-blue-600/15 rounded-full blur-[100px] animate-[pulse_14s_ease-in-out_infinite_reverse]"></div>
+        <div class="absolute -bottom-[20%] left-[20%] w-[60vw] h-[60vw] bg-indigo-500/10 dark:bg-indigo-600/15 rounded-full blur-[120px] animate-[pulse_12s_ease-in-out_infinite]"></div>
+    </div>
+
+    <!-- Theme Toggle -->
+    <div class="absolute top-6 right-6 z-50">
+        <button id="theme-toggle" class="w-12 h-12 flex items-center justify-center bg-white/80 dark:bg-slate-800/80 backdrop-blur-lg rounded-full shadow-lg text-slate-500 hover:text-blue-500 transition-colors border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <i class="fas fa-moon text-xl"></i>
+        </button>
+    </div>
+
+    <!-- Auth Container -->
+    <div class="flex-1 flex flex-col justify-center items-center px-4 py-8 sm:py-12 sm:px-6 lg:px-8 relative z-10 w-full">
+        
+        <div class="w-full max-w-md text-center animate-fade-in-up mb-6 sm:mb-8" style="animation-delay: 0.1s;">
+            <a href="index.html" class="text-5xl sm:text-6xl font-extrabold tracking-tight inline-block text-gradient-loop">Swipedt.</a>
+        </div>
+
+        <!-- Login Card -->
+        <div id="login-card" class="bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl p-6 sm:p-8 rounded-3xl shadow-2xl border border-slate-200/60 dark:border-slate-700/60 w-full max-w-md animate-fade-in-up" style="animation-delay: 0.2s;">
+            <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-center mb-2 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">Welcome Back</h2>
+            <p class="text-slate-500 dark:text-slate-400 text-center mb-6 text-sm">Please sign in to the demo account</p>
+            
+            <div id="login-error" class="hidden bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 p-3 rounded-lg text-sm mb-4 text-center"></div>
+            
+            <div class="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 p-3 rounded-xl mb-4 text-xs text-center font-medium">
+                Demo Credentials:<br>Username: <strong>demo</strong> | Password: <strong>demouser</strong>
+            </div>
+
+            <form id="login-form" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1" for="login-username">Username or Email</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"><i class="fas fa-user"></i></span>
+                        <input type="text" id="login-username" class="w-full pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-600 rounded-xl bg-transparent focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none dark:text-white" placeholder="demo" required>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1" for="login-password">Password</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"><i class="fas fa-lock"></i></span>
+                        <input type="password" id="login-password" class="w-full pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-600 rounded-xl bg-transparent focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none dark:text-white" placeholder="demouser" required>
+                    </div>
+                </div>
+                <button type="submit" class="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold rounded-xl shadow-lg transition duration-200">Sign In</button>
+            </form>
+            
+            <div class="mt-6 text-center text-sm text-slate-500">
+                Don't have an account? <span id="show-register" class="text-blue-500 hover:underline cursor-pointer font-semibold">Sign up</span>
+            </div>
+        </div>
+
+        <!-- Register Card -->
+        <div id="register-card" class="hidden bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl p-6 sm:p-8 rounded-3xl shadow-2xl border border-slate-200/60 dark:border-slate-700/60 w-full max-w-md animate-fade-in-up" style="animation-delay: 0.2s;">
+            <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-center mb-2 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">Create Account</h2>
+            <p class="text-slate-500 dark:text-slate-400 text-center mb-6 text-sm">Join the single-post swipe generation</p>
+            
+            <div class="bg-yellow-50 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 border border-yellow-200 dark:border-yellow-800 p-3 rounded-lg text-sm mb-4 text-center font-semibold">
+                Registration is disabled in this static demo.
+            </div>
+
+            <div class="mt-6 text-center text-sm text-slate-500">
+                Already have an account? <span id="show-login" class="text-blue-500 hover:underline cursor-pointer font-semibold">Sign in</span>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        // If user is already logged in, redirect to home
+        if(localStorage.getItem('swipedt_demo_logged_in') === 'true') {
+            window.location.href = 'home.html';
+        }
+
+        // Toggle view
+        document.getElementById('show-register').addEventListener('click', () => {
+            const login = document.getElementById('login-card');
+            const register = document.getElementById('register-card');
+            
+            login.classList.add('hidden');
+            register.classList.remove('hidden');
+            
+            register.classList.remove('animate-fade-in-up');
+            void register.offsetWidth;
+            register.classList.add('animate-fade-in-up');
+            
+            window.history.replaceState(null, null, '#register');
+        });
+
+        document.getElementById('show-login').addEventListener('click', () => {
+            const login = document.getElementById('login-card');
+            const register = document.getElementById('register-card');
+            
+            register.classList.add('hidden');
+            login.classList.remove('hidden');
+            
+            login.classList.remove('animate-fade-in-up');
+            void login.offsetWidth;
+            login.classList.add('animate-fade-in-up');
+            
+            window.history.replaceState(null, null, '#login');
+        });
+
+        if (window.location.hash === '#register') {
+            const login = document.getElementById('login-card');
+            const register = document.getElementById('register-card');
+            login.classList.add('hidden');
+            register.classList.remove('hidden');
+            register.classList.add('animate-fade-in-up');
+        }
+
+        // Form submit - mock login
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const err = document.getElementById('login-error');
+            err.classList.add('hidden');
+            
+            const btn = e.target.querySelector('button[type=submit]');
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Signing In...';
+            
+            const user = document.getElementById('login-username').value;
+            const pass = document.getElementById('login-password').value;
+
+            setTimeout(() => {
+                if(user === 'demo' && pass === 'demouser') {
+                    localStorage.setItem('swipedt_demo_logged_in', 'true');
+                    window.location.href = 'home.html';
+                } else {
+                    err.textContent = "Invalid username or password. Please use demo / demouser";
+                    err.classList.remove('hidden');
+                    btn.disabled = false;
+                    btn.innerHTML = originalText;
+                }
+            }, 800); // simulate network delay
+        });
+    </script>
+</body>
+</html>

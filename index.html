@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <!-- <link rel="manifest" href="manifest.json"> -->
+    <meta name="theme-color" content="#3b82f6">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="favicon.svg">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+    <title>Swipedt. - Swipe, Don't Scroll.</title>
+    <meta name="description"
+        content="We changed the traditional newsfeed where it has endless scrolling. Here the posts are one swipe away. Giving you minimal design and focused experience. No ads, ever">
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            future: { hoverOnlyWhenSupported: true },
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Anti FOUC & Mobile Overflow Fix */
+        html.dark {
+            background-color: #0f172a;
+        }
+
+        html,
+        body {
+            max-width: 100%;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+
+        @keyframes swipeLeft {
+
+            0%,
+            25% {
+                transform: translateX(0) rotate(0deg) scale(1);
+                opacity: 1;
+                z-index: 30;
+            }
+
+            30% {
+                transform: translateX(-150%) rotate(-15deg) scale(1) translateY(50px);
+                opacity: 0;
+                z-index: 30;
+            }
+
+            30.1%,
+            91.66% {
+                transform: translateX(0) scale(0.85);
+                opacity: 0;
+                z-index: 10;
+            }
+
+            96.66%,
+            100% {
+                transform: translateX(0) rotate(0deg) scale(1);
+                opacity: 1;
+                z-index: 20;
+            }
+        }
+
+        @keyframes swipeRight {
+
+            0%,
+            25% {
+                transform: translateX(0) rotate(0deg) scale(1);
+                opacity: 1;
+                z-index: 30;
+            }
+
+            30% {
+                transform: translateX(150%) rotate(15deg) scale(1) translateY(50px);
+                opacity: 0;
+                z-index: 30;
+            }
+
+            30.1%,
+            91.66% {
+                transform: translateX(0) scale(0.85);
+                opacity: 0;
+                z-index: 10;
+            }
+
+            96.66%,
+            100% {
+                transform: translateX(0) rotate(0deg) scale(1);
+                opacity: 1;
+                z-index: 20;
+            }
+        }
+
+        .mockup-card {
+            will-change: transform, opacity;
+            height: auto;
+        }
+
+        .card-1 {
+            animation: swipeRight 12s infinite cubic-bezier(0.4, 0, 0.2, 1);
+            animation-delay: 0s;
+        }
+
+        .card-2 {
+            animation: swipeLeft 12s infinite cubic-bezier(0.4, 0, 0.2, 1);
+            animation-delay: -4s;
+        }
+
+        .card-3 {
+            animation: swipeRight 12s infinite cubic-bezier(0.4, 0, 0.2, 1);
+            animation-delay: -8s;
+        }
+
+        @keyframes heartPulse {
+
+            0%,
+            15% {
+                transform: scale(1);
+                color: #94a3b8;
+            }
+
+            17% {
+                transform: scale(1.4);
+                color: #ef4444;
+            }
+
+            19%,
+            25% {
+                transform: scale(1);
+                color: #ef4444;
+            }
+
+            26%,
+            100% {
+                transform: scale(1);
+                color: #94a3b8;
+            }
+        }
+
+        .animate-heart {
+            animation: heartPulse 12s infinite cubic-bezier(0.4, 0, 0.2, 1);
+            animation-delay: 0s;
+        }
+
+        @keyframes bookmarkPulse {
+
+            0%,
+            15% {
+                transform: scale(1);
+                color: #94a3b8;
+                font-weight: 400;
+            }
+
+            17% {
+                transform: scale(1.4);
+                color: #eab308;
+                font-weight: 900;
+            }
+
+            19%,
+            25% {
+                transform: scale(1);
+                color: #eab308;
+                font-weight: 900;
+            }
+
+            26%,
+            100% {
+                transform: scale(1);
+                color: #94a3b8;
+                font-weight: 400;
+            }
+        }
+
+        .animate-bookmark {
+            animation: bookmarkPulse 12s infinite cubic-bezier(0.4, 0, 0.2, 1);
+            animation-delay: -8s;
+        }
+
+        @keyframes linkPulse {
+
+            0%,
+            15% {
+                transform: scale(1);
+                color: #94a3b8;
+            }
+
+            17% {
+                transform: scale(1.3);
+                color: #22c55e;
+            }
+
+            19%,
+            25% {
+                transform: scale(1);
+                color: #22c55e;
+            }
+
+            26%,
+            100% {
+                transform: scale(1);
+                color: #94a3b8;
+            }
+        }
+
+        .animate-link {
+            animation: linkPulse 12s infinite cubic-bezier(0.4, 0, 0.2, 1);
+            animation-delay: -4s;
+        }
+
+        @keyframes linkToastPop {
+
+            0%,
+            15% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+
+            17% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+
+            24% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+
+            26%,
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+        }
+
+        .animate-link-toast {
+            animation: linkToastPop 12s infinite cubic-bezier(0.4, 0, 0.2, 1);
+            animation-delay: -4s;
+        }
+
+        @keyframes bigHeartPop {
+
+            0%,
+            15% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0;
+            }
+
+            17% {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 0.9;
+            }
+
+            19% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+
+            25%,
+            100% {
+                transform: translate(-50%, -50%) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        .animate-big-heart {
+            animation: bigHeartPop 12s infinite cubic-bezier(0.4, 0, 0.2, 1);
+            animation-delay: 0s;
+        }
+
+        @keyframes bigSavePop {
+
+            0%,
+            15% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0;
+            }
+
+            17% {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 0.9;
+            }
+
+            19% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+
+            25%,
+            100% {
+                transform: translate(-50%, -50%) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        .animate-big-save {
+            animation: bigSavePop 12s infinite cubic-bezier(0.4, 0, 0.2, 1);
+            animation-delay: -8s;
+        }
+
+        @keyframes gradientLoop {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            100% {
+                background-position: 100% 50%;
+            }
+        }
+
+        @keyframes initialGlow {
+            0% {
+                filter: drop-shadow(0 0 12px rgba(168, 85, 247, 0.25)) drop-shadow(0 0 24px rgba(59, 130, 246, 0.15));
+                transform: scale(1.02);
+            }
+
+            100% {
+                filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.05));
+                transform: scale(1);
+            }
+        }
+
+        .text-gradient-loop {
+            background: linear-gradient(to right,
+                    #22d3ee 0%,
+                    #3b82f6 16.66%,
+                    #9333ea 33.33%,
+                    #22d3ee 50%,
+                    #3b82f6 66.66%,
+                    #9333ea 83.33%,
+                    #22d3ee 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: initialGlow 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards, gradientLoop 6s linear infinite;
+        }
+    </style>
+    <script src="js/theme.js"></script>
+</head>
+
+<body
+    class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-300 overflow-x-hidden relative font-sans">
+
+    <!-- Premium Background Glows -->
+    <div class="fixed top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
+        <div
+            class="absolute -top-[10%] -left-[10%] w-[50vw] h-[50vw] bg-purple-500/10 dark:bg-purple-600/15 rounded-full blur-[100px] animate-[pulse_10s_ease-in-out_infinite]">
+        </div>
+        <div
+            class="absolute top-[20%] -right-[10%] w-[40vw] h-[40vw] bg-blue-500/10 dark:bg-blue-600/15 rounded-full blur-[100px] animate-[pulse_14s_ease-in-out_infinite_reverse]">
+        </div>
+        <div
+            class="absolute -bottom-[20%] left-[20%] w-[60vw] h-[60vw] bg-indigo-500/10 dark:bg-indigo-600/15 rounded-full blur-[120px] animate-[pulse_12s_ease-in-out_infinite]">
+        </div>
+    </div>
+
+    <!-- Theme Toggle -->
+    <div class="absolute left-6 z-50" style="top: calc(1.5rem + env(safe-area-inset-top, 0px));">
+        <button id="theme-toggle"
+            class="w-12 h-12 flex items-center justify-center bg-white/80 dark:bg-slate-800/80 backdrop-blur-lg rounded-full shadow-lg text-slate-500 hover:text-blue-500 transition-colors border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <i class="fas fa-moon text-xl"></i>
+        </button>
+    </div>
+
+    <!-- Main Content -->
+    <main
+        class="flex-1 flex flex-col lg:flex-row items-center justify-center max-w-7xl mx-auto w-full px-6 sm:px-8 lg:px-16 py-6 lg:py-12 gap-6 lg:gap-24 relative z-10">
+
+        <!-- Mobile Header (App Name + Badge) -->
+        <div class="w-full text-center mt-14 mb-2 lg:hidden relative z-30 order-1">
+            <h1 class="text-6xl sm:text-8xl font-extrabold mb-3 tracking-tight inline-block text-gradient-loop">
+                Swipedt.
+            </h1>
+            <div class="mb-2">
+                <span
+                    class="font-bold tracking-[0.25em] text-[10px] sm:text-xs uppercase text-slate-500 dark:text-slate-400 bg-white/60 dark:bg-slate-800/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 shadow-sm inline-flex items-center gap-1.5">
+                    <i class="fas fa-star text-blue-500 text-[8px]"></i> A new social media platform <i
+                        class="fas fa-star text-purple-500 text-[8px]"></i>
+                </span>
+            </div>
+        </div>
+
+        <!-- Right Side: Animated Mockup -->
+        <div class="w-full max-w-sm lg:max-w-md perspective-1000 py-2 lg:py-6 relative z-20 order-2">
+            <!-- Grid stacking layout -->
+            <div class="grid w-full items-center relative">
+
+                <!-- Card 3 -->
+                <div
+                    class="mockup-card card-3 col-start-1 row-start-1 bg-white/95 dark:bg-slate-800/95 backdrop-blur-xl rounded-3xl border border-slate-200/60 dark:border-slate-700/60 flex flex-col shadow-2xl">
+                    <div class="flex justify-between items-center p-4 border-b border-slate-100 dark:border-slate-700">
+                        <div class="flex items-center space-x-3">
+                            <div class="flex items-center space-x-3">
+                                <img src="https://ui-avatars.com/api/?name=Sarah+Parker&background=8b5cf6&color=fff"
+                                    class="w-10 h-10 rounded-full object-cover shadow" alt="Avatar">
+                                <div class="flex flex-col text-left">
+                                    <span
+                                        class="font-bold text-sm leading-tight text-slate-800 dark:text-slate-100">Sarah
+                                        Parker</span>
+                                    <span class="text-xs text-slate-400">@sarah_p • Follow • 2h ago</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="relative"><button class="p-2 text-slate-400"><i
+                                    class="fas fa-ellipsis-h"></i></button></div>
+                    </div>
+                    <div class="flex-1 flex flex-col">
+                        <div
+                            class="block px-4 pt-4 pb-2 text-slate-800 dark:text-slate-200 break-words leading-relaxed text-sm shrink-0">
+                            Just finished hiking the incredible trails up north! The view from the top was absolutely
+                            breathtaking. 🌲🏔️
+                        </div>
+                        <div class="px-4 pb-2 flex-1 flex flex-col">
+                            <div
+                                class="block w-full overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-700/80 relative">
+                                <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=400&q=80"
+                                    class="w-full object-cover h-56 lg:h-64" alt="Hike">
+                                <i class="fas fa-bookmark absolute top-1/2 left-1/2 text-yellow-400 text-6xl drop-shadow-2xl animate-big-save pointer-events-none"
+                                    style="transform: translate(-50%, -50%) scale(0); opacity: 0;"></i>
+                            </div>
+                        </div>
+                        <div class="px-4 pb-3 pt-0 text-xs text-slate-500 font-medium">
+                            Liked by <span class="font-bold text-slate-700 dark:text-slate-300">@jamesdev</span> and
+                            <span class="font-bold text-slate-700 dark:text-slate-300">127 others</span>
+                        </div>
+                    </div>
+                    <div
+                        class="flex justify-between items-center px-6 py-3 border-t border-slate-100 dark:border-slate-700 bg-slate-50/80 dark:bg-slate-800/80 rounded-b-3xl">
+                        <button class="flex items-center space-x-2 text-slate-400"><i
+                                class="fas fa-heart text-lg"></i><span class="text-xs font-bold">128</span></button>
+                        <button class="flex items-center space-x-2 text-slate-400"><i
+                                class="fas fa-comment text-lg"></i><span class="text-xs font-bold">14</span></button>
+                        <button class="flex items-center space-x-2 text-slate-400"><i
+                                class="fas fa-link text-lg"></i></button>
+                        <button class="flex items-center space-x-2 text-slate-400"><i
+                                class="far fa-bookmark text-lg animate-bookmark"></i></button>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div
+                    class="mockup-card card-2 col-start-1 row-start-1 bg-white/95 dark:bg-slate-800/95 backdrop-blur-xl rounded-3xl border border-slate-200/60 dark:border-slate-700/60 flex flex-col shadow-2xl">
+                    <div class="flex justify-between items-center p-4 border-b border-slate-100 dark:border-slate-700">
+                        <div class="flex items-center space-x-3">
+                            <div class="flex items-center space-x-3">
+                                <img src="https://ui-avatars.com/api/?name=James+Dev&background=0ea5e9&color=fff"
+                                    class="w-10 h-10 rounded-full object-cover shadow" alt="Avatar">
+                                <div class="flex flex-col text-left">
+                                    <span
+                                        class="font-bold text-sm leading-tight text-slate-800 dark:text-slate-100">James
+                                        Developer</span>
+                                    <span class="text-xs text-slate-400">@jamesdev • Follow • 5h ago</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="relative"><button class="p-2 text-slate-400"><i
+                                    class="fas fa-ellipsis-h"></i></button></div>
+                    </div>
+                    <div class="flex-1 flex flex-col">
+                        <div
+                            class="block px-4 pt-4 pb-2 text-slate-800 dark:text-slate-200 break-words leading-relaxed text-sm shrink-0">
+                            Finally launched my new project after weeks of coding! Super excited to share it with
+                            everyone here! 🚀💻✨
+                        </div>
+                        <div class="px-4 pb-2 flex-1 flex flex-col">
+                            <div
+                                class="block w-full overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-700/80 relative">
+                                <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=400&q=80"
+                                    class="w-full object-cover h-56 lg:h-64" alt="Code">
+                                <!-- Simulated Link Copied Toast -->
+                                <div class="absolute top-1/2 left-1/2 bg-slate-900/90 dark:bg-black/90 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-2xl animate-link-toast pointer-events-none z-50 whitespace-nowrap flex items-center gap-2 border border-slate-700/50"
+                                    style="transform: translate(-50%, -50%) scale(0); opacity: 0;">
+                                    <i class="fas fa-check-circle text-green-500"></i> Link copied to clipboard!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="px-4 pb-3 pt-0 text-xs text-slate-500 font-medium">
+                            Liked by <span class="font-bold text-slate-700 dark:text-slate-300">@alexm</span> and <span
+                                class="font-bold text-slate-700 dark:text-slate-300">88 others</span>
+                        </div>
+                    </div>
+                    <div
+                        class="flex justify-between items-center px-6 py-3 border-t border-slate-100 dark:border-slate-700 bg-slate-50/80 dark:bg-slate-800/80 rounded-b-3xl">
+                        <button class="flex items-center space-x-2 text-slate-400"><i
+                                class="fas fa-heart text-lg"></i><span class="text-xs font-bold">89</span></button>
+                        <button class="flex items-center space-x-2 text-slate-400"><i
+                                class="fas fa-comment text-lg"></i><span class="text-xs font-bold">22</span></button>
+                        <button class="flex items-center space-x-2 text-slate-400 animate-link"><i
+                                class="fas fa-link text-lg"></i></button>
+                        <button class="flex items-center space-x-2 text-slate-400"><i
+                                class="far fa-bookmark text-lg"></i></button>
+                    </div>
+                </div>
+
+                <!-- Card 1 -->
+                <div
+                    class="mockup-card card-1 col-start-1 row-start-1 bg-white/95 dark:bg-slate-800/95 backdrop-blur-xl rounded-3xl border border-slate-200/60 dark:border-slate-700/60 flex flex-col shadow-2xl">
+                    <div class="flex justify-between items-center p-4 border-b border-slate-100 dark:border-slate-700">
+                        <div class="flex items-center space-x-3">
+                            <div class="flex items-center space-x-3">
+                                <img src="https://ui-avatars.com/api/?name=Alex+Morgan&background=f43f5e&color=fff"
+                                    class="w-10 h-10 rounded-full object-cover shadow" alt="Avatar">
+                                <div class="flex flex-col text-left">
+                                    <span
+                                        class="font-bold text-sm leading-tight text-slate-800 dark:text-slate-100">Alex
+                                        Morgan</span>
+                                    <span class="text-xs text-slate-400">@alexm • Following • Just now</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="relative"><button class="p-2 text-slate-400"><i
+                                    class="fas fa-ellipsis-h"></i></button></div>
+                    </div>
+                    <div class="flex-1 flex flex-col">
+                        <div
+                            class="block px-4 pt-4 pb-2 text-slate-800 dark:text-slate-200 break-words leading-relaxed text-sm shrink-0">
+                            Coffee and good vibes this morning. Let's make today amazing! ☕️🌅
+                        </div>
+                        <div class="px-4 pb-2 flex-1 flex flex-col">
+                            <div
+                                class="block w-full overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-700/80 relative">
+                                <img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?auto=format&fit=crop&w=400&q=80"
+                                    class="w-full object-cover h-48 lg:h-56" alt="Coffee">
+                                <!-- Simulated big heart double-tap pop -->
+                                <i class="fas fa-heart absolute top-1/2 left-1/2 text-white/90 text-6xl drop-shadow-2xl animate-big-heart pointer-events-none"
+                                    style="transform: translate(-50%, -50%) scale(0); opacity: 0;"></i>
+                            </div>
+                        </div>
+                        <div class="px-4 pb-3 pt-0 text-xs text-slate-500 font-medium">
+                            Liked by <span class="font-bold text-slate-700 dark:text-slate-300">@sarah_p</span> and
+                            <span class="font-bold text-slate-700 dark:text-slate-300">23 others</span>
+                        </div>
+                    </div>
+                    <div
+                        class="flex justify-between items-center px-6 py-3 border-t border-slate-100 dark:border-slate-700 bg-slate-50/80 dark:bg-slate-800/80 rounded-b-3xl">
+                        <button class="flex items-center space-x-2 text-slate-400 animate-heart"><i
+                                class="fas fa-heart text-lg"></i><span class="text-xs font-bold">24</span></button>
+                        <button class="flex items-center space-x-2 text-slate-400"><i
+                                class="fas fa-comment text-lg"></i><span class="text-xs font-bold">5</span></button>
+                        <button class="flex items-center space-x-2 text-slate-400"><i
+                                class="fas fa-link text-lg"></i></button>
+                        <button class="flex items-center space-x-2 text-slate-400"><i
+                                class="far fa-bookmark text-lg"></i></button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Left Side: Tagline & CTA (Below mockup on mobile) -->
+        <div class="flex-1 text-center lg:text-left max-w-2xl relative z-30 order-3 lg:order-1 mt-4 lg:mt-0">
+            <!-- Desktop Header (Hidden on Mobile) -->
+            <div class="hidden lg:block">
+                <h1 class="text-6xl sm:text-8xl font-extrabold mb-3 tracking-tight inline-block text-gradient-loop">
+                    Swipedt.
+                </h1>
+                <div class="mb-8">
+                    <span
+                        class="font-bold tracking-[0.25em] text-[10px] sm:text-xs uppercase text-slate-500 dark:text-slate-400 bg-white/60 dark:bg-slate-800/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 shadow-sm inline-flex items-center gap-1.5">
+                        <i class="fas fa-star text-blue-500 text-[8px]"></i> A new social media platform <i
+                            class="fas fa-star text-purple-500 text-[8px]"></i>
+                    </span>
+                </div>
+            </div>
+
+            <p
+                class="text-lg sm:text-xl text-slate-600 dark:text-slate-400 mb-8 lg:mb-10 leading-relaxed max-w-lg mx-auto lg:mx-0 font-medium">
+                We changed the traditional newsfeed where it has endless scrolling. Here the posts are one swipe away.
+                Giving you minimal design and focused experience. <strong class="text-slate-800 dark:text-slate-200">No
+                    ads, ever.</strong>
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mb-12 lg:mb-0">
+                <a href="https://swipedt.site/"
+                    class="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white text-lg font-bold rounded-2xl shadow-xl shadow-blue-500/25 hover:shadow-blue-500/40 transition-all transform hover:-translate-y-1 w-full sm:w-auto text-center border border-white/10">
+                    Get Started Free <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+                <a href="login.html#login"
+                    class="px-8 py-4 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-slate-700 text-lg font-bold rounded-2xl shadow-md hover:shadow-lg border border-slate-200 dark:border-slate-700 transition-all transform hover:-translate-y-1 w-full sm:w-auto text-center">
+                    Sign In
+                </a>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer
+        class="w-full border-t border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 backdrop-blur-md relative z-30"
+        style="padding-top: 2rem; padding-bottom: calc(2rem + env(safe-area-inset-bottom, 0px));">
+        <div
+            class="max-w-7xl mx-auto px-6 lg:px-16 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0 text-sm text-slate-500">
+            <div>
+                Swipedt &copy; 2024. All rights reserved.
+            </div>
+            <div class="flex space-x-6 font-medium">
+                <a href="help.html" class="hover:text-blue-500 transition">Help Center</a>
+                <a href="privacy.html" class="hover:text-blue-500 transition">Privacy Policy</a>
+                <a href="terms.html" class="hover:text-blue-500 transition">Terms of Service</a>
+                <a href="cookies.html" class="hover:text-blue-500 transition">Cookie Policy</a>
+            </div>
+        </div>
+    </footer>
+    <script>
+        // If user is already logged in, redirect to home
+        if (localStorage.getItem('swipedt_demo_logged_in') === 'true') {
+            window.location.href = 'home.html';
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+    nav.fixed.bottom-0 {
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+}
+
+::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+    display: none;
+}
+
+* {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.post-card {
+    will-change: transform, opacity;
+}
+
+@media (max-width: 767px) {
+    #feed-container {
+        min-height: calc(100vh - 12rem) !important;
+    }
+}
+
+input[type="date"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    box-sizing: border-box;
+    max-width: 100%;
+    min-height: 2.75rem;
+}
+
+body:has(input:focus, textarea:focus) nav.fixed.bottom-0 {
+    display: none !important;
+}
+
+@media (max-width: 767px) {
+    body:has(input:focus, textarea:focus) .post-card {
+        max-height: calc(100dvh - 1rem) !important;
+    }
+    body:has(input:focus, textarea:focus) .comments-section {
+        max-height: 180px !important;
+    }
+}
+
+.single-post-card {
+    max-height: none !important;
+}
+
+.single-post-card .comments-section {
+    max-height: none !important;
+}
+
+@media (max-width: 767px) {
+    body:has(input:focus, textarea:focus) .single-post-card {
+        max-height: none !important;
+    }
+    body:has(input:focus, textarea:focus) .single-post-card .comments-section {
+        max-height: none !important;
+    }
+}
+
+.swipe-card {
+    height: auto !important;
+    max-height: calc(100svh - 14rem) !important;
+}
+
+@media (min-width: 768px) {
+    .swipe-card {
+        height: auto !important;
+        max-height: calc(100vh - 12rem) !important;
+    }
+}
+
+@keyframes bigHeartPopInteractive {
+    0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+    15% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.9; }
+    30% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    80% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}

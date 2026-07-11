@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Help Center - Swipedt.</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { darkMode: 'class', theme: { extend: {} } }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/theme.js"></script>
+    <style>
+        .accordion-content { transition: max-height 0.3s ease-out, opacity 0.3s ease-out; max-height: 0; opacity: 0; overflow: hidden; }
+        .accordion-content.open { max-height: 500px; opacity: 1; }
+        .accordion-icon { transition: transform 0.3s ease; }
+        .accordion-icon.open { transform: rotate(180deg); }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
+
+<header class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-50 shadow-sm transition-colors duration-300" style="padding-top: env(safe-area-inset-top, 0px);">
+    <div class="flex max-w-7xl mx-auto w-full px-4 sm:px-6 items-center justify-between h-[56px]">
+        <a href="index.html" class="text-xl sm:text-2xl font-black tracking-tight bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent inline-block">
+            Swipedt.
+        </a>
+        <div class="flex items-center space-x-3">
+            <button id="theme-toggle" class="p-2 text-slate-500 hover:text-blue-500 dark:text-slate-400 dark:hover:text-blue-400 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition" title="Toggle Theme">
+                <i class="fas fa-moon text-lg"></i>
+            </button>
+            <a href="index.html" class="hidden sm:flex items-center space-x-2 px-3 py-1.5 text-sm font-semibold text-slate-600 hover:text-blue-500 dark:text-slate-300 dark:hover:text-blue-400 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition border border-slate-200 dark:border-slate-700" title="Back to App">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back</span>
+            </a>
+            <a href="index.html" class="sm:hidden p-2 text-slate-500 hover:text-blue-500 dark:text-slate-400 dark:hover:text-blue-400 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition" title="Back to App">
+                <i class="fas fa-arrow-left text-lg"></i>
+            </a>
+        </div>
+    </div>
+</header>
+
+<main class="flex-1 w-full max-w-4xl mx-auto flex flex-col p-6 relative" style="padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-gradient-to-b from-blue-500/10 to-transparent blur-3xl pointer-events-none -z-10"></div>
+    <div class="absolute top-40 -left-20 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl pointer-events-none -z-10"></div>
+    <div class="absolute top-80 -right-20 w-72 h-72 bg-pink-500/10 rounded-full blur-3xl pointer-events-none -z-10"></div>
+
+    <div class="text-center mb-12 mt-4 md:mt-10">
+        <div class="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-gradient-to-tr from-blue-500 to-purple-600 text-white shadow-xl shadow-blue-500/30 mb-6 transform hover:scale-105 transition duration-300">
+            <i class="fas fa-life-ring text-3xl"></i>
+        </div>
+        <h1 class="text-4xl md:text-5xl font-black tracking-tight text-slate-800 dark:text-white mb-4">
+            Help Center
+        </h1>
+        <p class="text-lg text-slate-500 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
+            Need assistance? Browse our most common guides below.
+        </p>
+    </div>
+
+    <!-- Accordion Articles -->
+    <div class="space-y-6 mb-16">
+        <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-6 pl-2">Account & Security</h2>
+        
+        <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+            <button class="accordion-btn w-full px-6 py-4 flex items-center justify-between bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition">
+                <span class="font-bold text-slate-800 dark:text-slate-100">I forgot my password, how do I recover my account?</span>
+                <i class="fas fa-chevron-down text-slate-400 accordion-icon"></i>
+            </button>
+            <div class="accordion-content px-6 bg-slate-50 dark:bg-slate-900/50">
+                <div class="py-4 text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                    If you have forgotten your password, go to the login screen and click "Forgot Password?". Enter the email address associated with your account, and we will send you a secure recovery link. If you no longer have access to that email, please use the Contact Support form below.
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+            <button class="accordion-btn w-full px-6 py-4 flex items-center justify-between bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition">
+                <span class="font-bold text-slate-800 dark:text-slate-100">I think my account was hacked, what should I do?</span>
+                <i class="fas fa-chevron-down text-slate-400 accordion-icon"></i>
+            </button>
+            <div class="accordion-content px-6 bg-slate-50 dark:bg-slate-900/50">
+                <div class="py-4 text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                    If you notice suspicious activity or cannot access your account, immediately reset your password using your email. If the email address has been changed without your permission, submit an "Account Recovery" ticket below with any proof of ownership you can provide.
+                </div>
+            </div>
+        </div>
+
+        <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-6 pl-2 mt-10">Using Swipedt</h2>
+
+        <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+            <button class="accordion-btn w-full px-6 py-4 flex items-center justify-between bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition">
+                <span class="font-bold text-slate-800 dark:text-slate-100">How do I delete or edit a post?</span>
+                <i class="fas fa-chevron-down text-slate-400 accordion-icon"></i>
+            </button>
+            <div class="accordion-content px-6 bg-slate-50 dark:bg-slate-900/50">
+                <div class="py-4 text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                    Navigate to the post you wish to modify. Click the three dots (...) in the top-right corner of the post card. A menu will appear allowing you to select either "Edit" or "Delete". Note that deleting a post is permanent and cannot be undone.
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+            <button class="accordion-btn w-full px-6 py-4 flex items-center justify-between bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition">
+                <span class="font-bold text-slate-800 dark:text-slate-100">How do I navigate the newsfeed using swipes?</span>
+                <i class="fas fa-chevron-down text-slate-400 accordion-icon"></i>
+            </button>
+            <div class="accordion-content px-6 bg-slate-50 dark:bg-slate-900/50">
+                <div class="py-4 text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                    Unlike traditional social media where you scroll vertically, Swipedt uses a unique interactive swiping mechanism! Simply swipe a post <strong>left</strong> or <strong>right</strong> to navigate to the next piece of content. This ensures a focused, one-post-at-a-time experience.
+                </div>
+            </div>
+        </div>
+
+        <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-6 pl-2 mt-10">Safety & Moderation</h2>
+
+        <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+            <button class="accordion-btn w-full px-6 py-4 flex items-center justify-between bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition">
+                <span class="font-bold text-slate-800 dark:text-slate-100">How do I report a user or post?</span>
+                <i class="fas fa-chevron-down text-slate-400 accordion-icon"></i>
+            </button>
+            <div class="accordion-content px-6 bg-slate-50 dark:bg-slate-900/50">
+                <div class="py-4 text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                    You can report any post or comment by clicking the three dots (...) menu on the content and selecting "Report". For severe violations, our Auto-Mod system will automatically handle the issue. Our human moderators review all flagged content.
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+            <button class="accordion-btn w-full px-6 py-4 flex items-center justify-between bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition">
+                <span class="font-bold text-slate-800 dark:text-slate-100">What happens if I get a system violation warning?</span>
+                <i class="fas fa-chevron-down text-slate-400 accordion-icon"></i>
+            </button>
+            <div class="accordion-content px-6 bg-slate-50 dark:bg-slate-900/50">
+                <div class="py-4 text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                    If our systems detect content that violates our Community Guidelines, you may receive an automated strike. Accumulating multiple strikes can result in a temporary restriction or permanent ban. If you believe you were unfairly flagged, submit a Support Ticket below.
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+// Accordion Logic
+document.querySelectorAll('.accordion-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const content = btn.nextElementSibling;
+        const icon = btn.querySelector('.accordion-icon');
+        const isOpen = content.classList.contains('open');
+        
+        // Close all
+        document.querySelectorAll('.accordion-content').forEach(c => c.classList.remove('open'));
+        document.querySelectorAll('.accordion-icon').forEach(i => i.classList.remove('open'));
+
+        if (!isOpen) {
+            content.classList.add('open');
+            icon.classList.add('open');
+        }
+    });
+});
+
+// Theme toggle setup specifically for these static pages
+document.getElementById('theme-toggle')?.addEventListener('click', function() {
+    if (document.documentElement.classList.contains('dark')) {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('swipedt_theme', 'light');
+    } else {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('swipedt_theme', 'dark');
+    }
+});
+</script>
+
+</body>
+</html>
