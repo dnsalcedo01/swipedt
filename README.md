@@ -29,33 +29,5 @@ This version is completely serverless and statically hosted. It relies on:
 
 All PHP dependencies and database connections from the original codebase have been completely removed or simulated in JavaScript to ensure 100% compatibility with GitHub Pages.
 
-## How to Deploy to GitHub Pages
-
-1. Initialize your repository:
-   ```bash
-   git init
-   git add .
-   git commit -m "Initial commit: Swipedt static demo"
-   ```
-
-2. Link to your GitHub repository (replace `<your-username>` and `<your-repo>`):
-   ```bash
-   git remote add origin https://github.com/<your-username>/<your-repo>.git
-   git branch -M main
-   git push -u origin main
-   ```
-
-3. Enable GitHub Pages:
-   - Go to your repository settings on GitHub.
-   - Navigate to **Pages** in the left sidebar.
-   - Select the `main` branch (and `/root` folder) as your source.
-   - Click **Save**. Your site will be live at `https://<your-username>.github.io/<your-repo>/`.
-
-## Refining the Experience
-
-Feel free to edit this `README.md` to customize the description and instructions according to your personal or project needs. You can add more screenshots, elaborate on the inspiration behind the project, or outline the features of the full backend version.
-
----
-
 **© 2024 Swipedt. All Rights Reserved.**  
 *This repository is for demonstration purposes only. The code, UI, and design may not be copied, modified, or distributed without explicit permission.*
