@@ -65,7 +65,11 @@ let activeCard = null;
 let isAnimating = false;
 
 document.addEventListener('DOMContentLoaded', () => {
-    initDemoFeed();
+    if (document.getElementById('single-post-container')) {
+        initSinglePost();
+    } else {
+        initDemoFeed();
+    }
 });
 
 function initDemoFeed() {
@@ -95,7 +99,15 @@ function showNextPost() {
     document.getElementById('feed-container').appendChild(card);
     activeCard = card;
     
-    toggleSwipeOverlays(true);
+    if (typeof toggleSwipeOverlays === 'function') {
+        toggleSwipeOverlays(true);
+        // Setup ResizeObserver to track image loading height changes
+        if (window.swipeResizeObserver) window.swipeResizeObserver.disconnect();
+        window.swipeResizeObserver = new ResizeObserver(() => {
+            if (activeCard && !isAnimating) toggleSwipeOverlays(true);
+        });
+        window.swipeResizeObserver.observe(activeCard);
+    }
 }
 
 window.toggleSwipeOverlays = function(show) {
@@ -198,18 +210,18 @@ function createPostCard(post) {
             </div>
         </div>
         <div class="flex justify-between items-center px-6 py-3 border-t border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50">
-            <button class="flex items-center space-x-2 transition ${post.user_liked ? 'text-red-500 dark:text-red-400' : 'text-slate-400 hover:text-red-500'}" onclick="alert('Demo: Interaction disabled')">
+            <button class="flex items-center space-x-2 transition ${post.user_liked ? 'text-red-500 dark:text-red-400' : 'text-slate-400 hover:text-red-500'}" onclick="window.toggleLike(event, ${post.id}, this)">
                 <i class="${post.user_liked ? 'fas' : 'far'} fa-heart text-xl"></i>
                 <span class="text-xs font-bold">${post.like_count}</span>
             </button>
-            <button class="flex items-center space-x-2 text-slate-400 hover:text-blue-500 transition" onclick="alert('Demo: Comments disabled')">
+            <button class="flex items-center space-x-2 text-slate-400 hover:text-blue-500 transition" onclick="window.location.href='post.html?id=${post.id}'">
                 <i class="fas fa-comment text-lg"></i>
                 <span class="text-xs font-bold">${post.comment_count}</span>
             </button>
-            <button class="flex items-center space-x-2 text-slate-400 hover:text-green-500 transition" onclick="alert('Demo: Share disabled')">
+            <button class="flex items-center space-x-2 text-slate-400 hover:text-green-500 transition" onclick="window.copyLink(event, ${post.id})">
                 <i class="fas fa-link text-lg"></i>
             </button>
-            <button class="flex items-center space-x-2 transition ${post.user_saved ? 'text-yellow-500 dark:text-yellow-400' : 'text-slate-400 hover:text-yellow-500'}" onclick="alert('Demo: Save disabled')">
+            <button class="flex items-center space-x-2 transition ${post.user_saved ? 'text-yellow-500 dark:text-yellow-400' : 'text-slate-400 hover:text-yellow-500'}" onclick="window.toggleSave(event, ${post.id}, this)">
                 <i class="${post.user_saved ? 'fas' : 'far'} fa-bookmark text-lg"></i>
             </button>
         </div>
@@ -296,4 +308,139 @@ window.forceSwipe = function(direction) {
 
 window.getVerifiedBadgeSvg = function(extraClass = 'ml-[1px]', isStatic = false) {
     return `<span class="verified-badge-icon ${extraClass}" oncontextmenu="return false;" title="Verified User: This account represents a notable public figure or creator."></span>`;
+};
+
+// --- Mock Interaction Logic ---
+
+window.toggleLike = function(event, postId, btn) {
+    if(event) { event.preventDefault(); event.stopPropagation(); }
+    let isLiked = btn.classList.contains('text-red-500');
+    let span = btn.querySelector('span');
+    let count = parseInt(span.textContent, 10);
+    
+    if (isLiked) {
+        btn.classList.remove('text-red-500', 'dark:text-red-400');
+        btn.classList.add('text-slate-400', 'hover:text-red-500');
+        btn.querySelector('i').classList.replace('fas', 'far');
+        span.textContent = count - 1;
+    } else {
+        btn.classList.remove('text-slate-400', 'hover:text-red-500');
+        btn.classList.add('text-red-500', 'dark:text-red-400');
+        btn.querySelector('i').classList.replace('far', 'fas');
+        span.textContent = count + 1;
+        
+        const bigHeart = document.getElementById(`big-heart-${postId}`);
+        if (bigHeart) {
+            bigHeart.style.animation = 'none';
+            bigHeart.offsetHeight; // trigger reflow
+            bigHeart.style.animation = 'bigHeartPopInteractive 0.8s ease-out forwards';
+        }
+    }
+};
+
+window.toggleSave = function(event, postId, btn) {
+    if(event) { event.preventDefault(); event.stopPropagation(); }
+    let isSaved = btn.classList.contains('text-yellow-500');
+    
+    if (isSaved) {
+        btn.classList.remove('text-yellow-500', 'dark:text-yellow-400');
+        btn.classList.add('text-slate-400', 'hover:text-yellow-500');
+        btn.querySelector('i').classList.replace('fas', 'far');
+    } else {
+        btn.classList.remove('text-slate-400', 'hover:text-yellow-500');
+        btn.classList.add('text-yellow-500', 'dark:text-yellow-400');
+        btn.querySelector('i').classList.replace('far', 'fas');
+        
+        const bigSave = document.getElementById(`big-save-${postId}`);
+        if (bigSave) {
+            bigSave.style.animation = 'none';
+            bigSave.offsetHeight; // trigger reflow
+            bigSave.style.animation = 'bigHeartPopInteractive 0.8s ease-out forwards';
+        }
+    }
+};
+
+window.copyLink = function(event, postId) {
+    if(event) { event.preventDefault(); event.stopPropagation(); }
+    const url = `${window.location.origin}${window.location.pathname.replace(/\/[^/]*$/, '/')}post.html?id=${postId}`;
+    navigator.clipboard.writeText(url).then(() => {
+        alert("Link copied to clipboard: " + url);
+    }).catch(err => {
+        console.error('Failed to copy link: ', err);
+    });
+};
+
+// --- Single Post Logic ---
+window.initSinglePost = function() {
+    const params = new URLSearchParams(window.location.search);
+    const postId = parseInt(params.get('id'));
+    const post = preloadedPosts.find(p => p.id === postId) || preloadedPosts[0];
+    
+    if (!post) {
+        document.getElementById('single-post-container').innerHTML = '<p class="p-4 text-center">Post not found.</p>';
+        return;
+    }
+    
+    // Create card without swipe
+    const card = createPostCard(post);
+    card.classList.remove('absolute', 'swipe-card', 'max-h-[calc(100%-1rem)]', 'md:max-h-[calc(100%-2rem)]');
+    card.classList.add('relative', 'mb-6');
+    // Remove swipe event listeners attached by createPostCard by cloning and replacing
+    const cardClone = card.cloneNode(true);
+    document.getElementById('single-post-container').appendChild(cardClone);
+    
+    // Attach single post specific logic
+    cardClone.querySelectorAll('button[onclick*="toggleLike"]').forEach(btn => {
+        btn.setAttribute('onclick', `window.toggleLike(event, ${post.id}, this)`);
+    });
+    cardClone.querySelectorAll('button[onclick*="toggleSave"]').forEach(btn => {
+        btn.setAttribute('onclick', `window.toggleSave(event, ${post.id}, this)`);
+    });
+    
+    renderMockComments();
+};
+
+function renderMockComments() {
+    const commentsList = document.getElementById('comments-list');
+    commentsList.innerHTML = `
+        <div class="flex space-x-3 mb-4 animate-fade-in">
+            <img src="https://ui-avatars.com/api/?name=User+One&background=cbd5e1" class="w-8 h-8 rounded-full" alt="Avatar">
+            <div class="flex-1">
+                <div class="bg-slate-100 dark:bg-slate-800 rounded-2xl p-3 inline-block">
+                    <span class="font-bold text-sm text-slate-800 dark:text-slate-100 block">user_one</span>
+                    <span class="text-sm text-slate-700 dark:text-slate-300">This is a fantastic demo! Love the UI.</span>
+                </div>
+                <div class="text-xs text-slate-400 mt-1 ml-2">2 hours ago</div>
+            </div>
+        </div>
+    `;
+}
+
+window.postComment = function(event) {
+    event.preventDefault();
+    const input = document.getElementById('comment-input');
+    const text = input.value.trim();
+    if(!text) return;
+    
+    const commentsList = document.getElementById('comments-list');
+    const newComment = document.createElement('div');
+    newComment.className = 'flex space-x-3 mb-4 animate-fade-in';
+    newComment.innerHTML = `
+        <img src="https://ui-avatars.com/api/?name=Demo+User&background=3b82f6&color=fff" class="w-8 h-8 rounded-full" alt="Avatar">
+        <div class="flex-1">
+            <div class="bg-slate-100 dark:bg-slate-800 rounded-2xl p-3 inline-block">
+                <span class="font-bold text-sm text-slate-800 dark:text-slate-100 block">demouser</span>
+                <span class="text-sm text-slate-700 dark:text-slate-300">${text}</span>
+            </div>
+            <div class="text-xs text-slate-400 mt-1 ml-2">Just now</div>
+        </div>
+    `;
+    commentsList.insertBefore(newComment, commentsList.firstChild);
+    input.value = '';
+    
+    // Update count in card
+    const commentCountSpan = document.querySelector('button[onclick*="post.html"] span');
+    if (commentCountSpan) {
+        commentCountSpan.textContent = parseInt(commentCountSpan.textContent, 10) + 1;
+    }
 };
