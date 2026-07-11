@@ -1,4 +1,4 @@
-let preloadedPosts = [
+window.allDemoPosts = [
     {
         id: 1,
         user_id: 101,
@@ -58,9 +58,50 @@ let preloadedPosts = [
         user_saved: 1,
         is_following: 0,
         is_badge_verified: 1
+    },
+    {
+        id: 4,
+        user_id: 104,
+        post_hash: 'jkl3456',
+        username: 'urban_snaps',
+        full_name: 'City Snaps',
+        avatar_color: '#f59e0b',
+        avatar_url: 'https://ui-avatars.com/api/?name=City+Snaps&background=f59e0b&color=fff',
+        text_content: 'The city never sleeps. Catching those golden hour reflections on the glass. 🌆',
+        image_url: 'https://images.unsplash.com/photo-1449844908441-8829872d2607?auto=format&fit=crop&w=600&q=80',
+        created_at: new Date(Date.now() - 172800000).toISOString(),
+        like_count: 211,
+        comment_count: 31,
+        recent_liker: 'traveler_joe',
+        second_liker: null,
+        user_liked: 0,
+        user_saved: 0,
+        is_following: 1,
+        is_badge_verified: 0
+    },
+    {
+        id: 5,
+        user_id: 105,
+        post_hash: 'mno7890',
+        username: 'pet_pals',
+        full_name: 'Happy Pets',
+        avatar_color: '#8b5cf6',
+        avatar_url: 'https://ui-avatars.com/api/?name=Happy+Pets&background=8b5cf6&color=fff',
+        text_content: 'Who can resist this face? 🐶🐾',
+        image_url: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=600&q=80',
+        created_at: new Date(Date.now() - 14400000).toISOString(),
+        like_count: 856,
+        comment_count: 124,
+        recent_liker: 'doggo_fan',
+        second_liker: 'cat_lover',
+        user_liked: 1,
+        user_saved: 1,
+        is_following: 0,
+        is_badge_verified: 0
     }
 ];
 
+let preloadedPosts = [];
 let activeCard = null;
 let isAnimating = false;
 
@@ -73,17 +114,47 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function initDemoFeed() {
+    window.switchFeed('suggested');
+}
+
+window.switchFeed = function(type) {
+    if (isAnimating) return;
+    
+    // Update active tab styling
+    const suggestedTab = document.getElementById('tab-suggested');
+    const followingTab = document.getElementById('tab-following');
+    
+    if (suggestedTab && followingTab) {
+        if (type === 'suggested') {
+            suggestedTab.className = "feed-tab text-base font-bold pb-2 border-b-2 border-blue-500 text-slate-800 dark:text-slate-100 transition-colors";
+            followingTab.className = "feed-tab text-base font-semibold pb-2 border-b-2 border-transparent text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors";
+        } else {
+            followingTab.className = "feed-tab text-base font-bold pb-2 border-b-2 border-blue-500 text-slate-800 dark:text-slate-100 transition-colors";
+            suggestedTab.className = "feed-tab text-base font-semibold pb-2 border-b-2 border-transparent text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors";
+        }
+    }
+
+    // Filter posts
+    preloadedPosts = window.allDemoPosts.filter(p => {
+        if (type === 'suggested') return p.is_following === 0;
+        return p.is_following === 1;
+    }).map(p => ({...p})); // deep copy so we don't mutate original objects directly when swiping
+
+    // Clear feed
+    if (activeCard) {
+        activeCard.remove();
+        activeCard = null;
+    }
+    document.querySelectorAll('.post-card').forEach(c => c.remove());
+    
     const container = document.getElementById('feed-container');
-    container.innerHTML = `
-        <div id="no-posts-message" class="hidden mt-8 mb-8 text-center bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-lg max-w-sm">
-            <i class="fas fa-smile-wink text-5xl text-blue-500 mb-4"></i>
-            <h3 class="text-xl font-extrabold mb-2">You're All Caught Up!</h3>
-            <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">You have swiped through all demo posts.</p>
-            <button class="px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-xl transition shadow" onclick="location.reload()">Restart Demo</button>
-        </div>`;
+    if (container) {
+        const noPostsMsg = document.getElementById('no-posts-message');
+        if (noPostsMsg) noPostsMsg.classList.add('hidden');
+    }
     
     showNextPost();
-}
+};
 
 function showNextPost() {
     if (isAnimating) return;
@@ -171,7 +242,7 @@ function createPostCard(post) {
     const displayContent = post.text_content.replace(/(^|\s)#(\w+)/g, '$1<span class="text-blue-500 font-medium">#$2</span>').replace(/(^|\s)@(\w+)/g, '$1<span class="text-blue-500 font-medium">@$2</span>');
     
     const imageHtml = post.image_url ? `
-        <div class="px-4 pb-4 flex-1 min-h-[100px] flex flex-col overflow-hidden relative group">
+        <div class="px-4 pb-4 flex-1 min-h-[100px] flex flex-col overflow-hidden relative group image-wrapper-target">
             <div class="block w-full h-full overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-700/80 cursor-pointer">
                 <img src="${post.image_url}" draggable="false" class="w-full h-full object-cover hover:scale-[1.01] transition-transform duration-300" alt="Post image">
             </div>
@@ -182,8 +253,8 @@ function createPostCard(post) {
     const avatarHtml = `<img src="${post.avatar_url}" draggable="false" class="w-10 h-10 shrink-0 rounded-full object-cover shadow" alt="Avatar">`;
     const verifiedBadge = post.is_badge_verified ? '<span class="verified-badge-icon ml-[1px]" oncontextmenu="return false;" title="Verified User"></span>' : '';
     const followBtnHtml = post.is_following 
-        ? ` • <button type="button" class="text-slate-400 hover:text-slate-500 font-bold transition-colors" onclick="alert('Demo: Action disabled')">Following</button>`
-        : ` • <button type="button" class="text-blue-500 hover:text-blue-600 font-bold transition-colors" onclick="alert('Demo: Action disabled')">Follow</button>`;
+        ? ` • <button type="button" class="follow-btn-${post.user_id} text-slate-400 hover:text-slate-500 font-bold transition-colors" onclick="window.toggleFollow(event, this, ${post.user_id})">Following</button>`
+        : ` • <button type="button" class="follow-btn-${post.user_id} text-blue-500 hover:text-blue-600 font-bold transition-colors" onclick="window.toggleFollow(event, this, ${post.user_id})">Follow</button>`;
 
     card.innerHTML = `
         <div class="flex justify-between items-center p-4 border-b border-slate-100 dark:border-slate-700">
@@ -312,6 +383,37 @@ window.getVerifiedBadgeSvg = function(extraClass = 'ml-[1px]', isStatic = false)
 
 // --- Mock Interaction Logic ---
 
+window.toggleFollow = function(event, btn, userId) {
+    if(event) { event.preventDefault(); event.stopPropagation(); }
+    
+    const isFollowing = btn.textContent.trim() === 'Following';
+    
+    // Update data state so next cards by this user reflect it
+    window.allDemoPosts.forEach(p => {
+        if (p.user_id === userId) {
+            p.is_following = !isFollowing ? 1 : 0;
+        }
+    });
+    preloadedPosts.forEach(p => {
+        if (p.user_id === userId) {
+            p.is_following = !isFollowing ? 1 : 0;
+        }
+    });
+
+    // Update all visible buttons for this user on the page
+    document.querySelectorAll(`.follow-btn-${userId}`).forEach(b => {
+        if (isFollowing) {
+            b.textContent = 'Follow';
+            b.className = `follow-btn-${userId} text-blue-500 hover:text-blue-600 font-bold transition-colors`;
+            if (window.showToast) window.showToast('Unfollowed user');
+        } else {
+            b.textContent = 'Following';
+            b.className = `follow-btn-${userId} text-slate-400 hover:text-slate-500 font-bold transition-colors`;
+            if (window.showToast) window.showToast('Following user');
+        }
+    });
+};
+
 window.toggleLike = function(event, postId, btn) {
     if(event) { event.preventDefault(); event.stopPropagation(); }
     let isLiked = btn.classList.contains('text-red-500');
@@ -364,10 +466,38 @@ window.copyLink = function(event, postId) {
     if(event) { event.preventDefault(); event.stopPropagation(); }
     const url = `${window.location.origin}${window.location.pathname.replace(/\/[^/]*$/, '/')}post.html?id=${postId}`;
     navigator.clipboard.writeText(url).then(() => {
-        alert("Link copied to clipboard: " + url);
+        const card = document.querySelector(`.post-card`);
+        const imgWrapper = card ? card.querySelector('.image-wrapper-target') : null;
+        if (imgWrapper && window.showToast) {
+            window.showToast('Link copied successfully!', imgWrapper);
+        } else if (card && window.showToast) {
+            window.showToast('Link copied successfully!', card);
+        } else {
+            alert("Link copied to clipboard: " + url);
+        }
     }).catch(err => {
         console.error('Failed to copy link: ', err);
     });
+};
+
+window.showToast = function(message, containerElement = null) {
+    if (containerElement) {
+        containerElement.style.position = 'relative';
+        const toast = document.createElement('div');
+        toast.className = 'absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-slate-900/90 dark:bg-black/90 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-2xl transition-all duration-300 opacity-0 pointer-events-none flex items-center gap-2 border border-slate-700/50 z-50 whitespace-nowrap scale-95';
+        toast.innerHTML = `<i class="fas fa-check-circle text-green-500"></i><span>${message}</span>`;
+        containerElement.appendChild(toast);
+        requestAnimationFrame(() => {
+            toast.classList.remove('opacity-0', 'scale-95');
+            toast.classList.add('opacity-100', 'scale-100');
+        });
+        setTimeout(() => {
+            toast.classList.remove('opacity-100', 'scale-100');
+            toast.classList.add('opacity-0', 'scale-95');
+            setTimeout(() => toast.remove(), 300);
+        }, 2000);
+        return;
+    }
 };
 
 // --- Single Post Logic ---
@@ -397,13 +527,27 @@ window.initSinglePost = function() {
         btn.setAttribute('onclick', `window.toggleSave(event, ${post.id}, this)`);
     });
     
+    // Add the comments section inside the card
+    const commentsHtml = `
+        <div class="comments-section border-t border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 max-h-60 flex flex-col" id="comments-${post.id}">
+            <div class="comments-list overflow-y-auto p-4 space-y-3 flex-1" id="comments-list">
+                <!-- Comments injected via renderMockComments -->
+            </div>
+            <div class="flex items-center space-x-2 p-3 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
+                <input type="text" id="comment-input" onkeydown="if(event.key === 'Enter') { event.preventDefault(); postComment(event); }" class="flex-1 px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-full bg-transparent text-base focus:ring-2 focus:ring-blue-500 focus:outline-none dark:text-white" placeholder="Add a comment...">
+                <button onclick="postComment(event)" class="text-blue-500 hover:text-blue-600 p-2"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    `;
+    cardClone.insertAdjacentHTML('beforeend', commentsHtml);
+
     renderMockComments();
 };
 
 function renderMockComments() {
     const commentsList = document.getElementById('comments-list');
     commentsList.innerHTML = `
-        <div class="flex space-x-3 mb-4 animate-fade-in">
+        <div class="flex space-x-3 mb-2 animate-fade-in">
             <img src="https://ui-avatars.com/api/?name=User+One&background=cbd5e1" class="w-8 h-8 rounded-full" alt="Avatar">
             <div class="flex-1">
                 <div class="bg-slate-100 dark:bg-slate-800 rounded-2xl p-3 inline-block">
@@ -417,14 +561,14 @@ function renderMockComments() {
 }
 
 window.postComment = function(event) {
-    event.preventDefault();
+    if(event) event.preventDefault();
     const input = document.getElementById('comment-input');
     const text = input.value.trim();
     if(!text) return;
     
     const commentsList = document.getElementById('comments-list');
     const newComment = document.createElement('div');
-    newComment.className = 'flex space-x-3 mb-4 animate-fade-in';
+    newComment.className = 'flex space-x-3 mb-2 animate-fade-in';
     newComment.innerHTML = `
         <img src="https://ui-avatars.com/api/?name=Demo+User&background=3b82f6&color=fff" class="w-8 h-8 rounded-full" alt="Avatar">
         <div class="flex-1">

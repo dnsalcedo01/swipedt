@@ -101,8 +101,8 @@
 <main class="flex-1 max-w-lg md:max-w-xl mx-auto w-full px-4 pt-3 pb-20 md:pb-6 flex flex-col relative">
     <!-- Feed Switcher Tabs -->
     <div id="feed-tabs-container" class="flex justify-center space-x-6 mb-3 mt-2 md:mt-3 relative z-40">
-        <button class="feed-tab text-base font-bold pb-2 border-b-2 border-blue-500 text-slate-800 dark:text-slate-100" data-feed="suggested">Suggested</button>
-        <button class="feed-tab text-base font-semibold pb-2 border-b-2 border-transparent text-slate-400 hover:text-slate-600 dark:hover:text-slate-300" onclick="alert('Demo: Following feed is disabled')" data-feed="followers">Following</button>
+        <button id="tab-suggested" class="feed-tab text-base font-bold pb-2 border-b-2 border-blue-500 text-slate-800 dark:text-slate-100 transition-colors" onclick="window.switchFeed('suggested')">Suggested</button>
+        <button id="tab-following" class="feed-tab text-base font-semibold pb-2 border-b-2 border-transparent text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors" onclick="window.switchFeed('following')">Following</button>
     </div>
 
     <!-- Swipe Feed Area Wrapper -->
