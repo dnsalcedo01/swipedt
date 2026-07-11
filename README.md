@@ -29,5 +29,5 @@ This version is completely serverless and statically hosted. It relies on:
 
 All PHP dependencies and database connections from the original codebase have been completely removed or simulated in JavaScript to ensure 100% compatibility with GitHub Pages.
 
-**© 2024 Swipedt. All Rights Reserved.**  
+**© 2026 Swipedt. All Rights Reserved.**  
 *This repository is for demonstration purposes only. The code, UI, and design may not be copied, modified, or distributed without explicit permission.*
