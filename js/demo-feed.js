@@ -541,23 +541,75 @@ window.initSinglePost = function() {
     `;
     cardClone.insertAdjacentHTML('beforeend', commentsHtml);
 
-    renderMockComments();
+    renderMockComments(post.comment_count);
 };
 
-function renderMockComments() {
+function renderMockComments(count) {
     const commentsList = document.getElementById('comments-list');
-    commentsList.innerHTML = `
-        <div class="flex space-x-3 mb-2 animate-fade-in">
-            <img src="https://ui-avatars.com/api/?name=User+One&background=cbd5e1" class="w-8 h-8 rounded-full" alt="Avatar">
-            <div class="flex-1">
-                <div class="bg-slate-100 dark:bg-slate-800 rounded-2xl p-3 inline-block">
-                    <span class="font-bold text-sm text-slate-800 dark:text-slate-100 block">user_one</span>
-                    <span class="text-sm text-slate-700 dark:text-slate-300">This is a fantastic demo! Love the UI.</span>
-                </div>
-                <div class="text-xs text-slate-400 mt-1 ml-2">2 hours ago</div>
+    commentsList.innerHTML = '';
+    
+    if (count === 0) {
+        commentsList.innerHTML = '<p class="text-xs text-slate-400 text-center py-4">No comments yet. Be the first!</p>';
+        return;
+    }
+    
+    const mockUsers = [
+        { u: 'traveler_joe', f: 'Joe The Explorer', a: 'https://ui-avatars.com/api/?name=Joe+Explorer&background=3b82f6&color=fff' },
+        { u: 'tech_guru', f: 'Alex Tech', a: 'https://ui-avatars.com/api/?name=Alex+Tech&background=ef4444&color=fff' },
+        { u: 'foodie_anna', f: 'Anna Foodie', a: 'https://ui-avatars.com/api/?name=Anna+Foodie&background=10b981&color=fff' },
+        { u: 'urban_snaps', f: 'City Snaps', a: 'https://ui-avatars.com/api/?name=City+Snaps&background=f59e0b&color=fff' }
+    ];
+    
+    const mockTexts = [
+        "This is amazing!",
+        "Love the aesthetic here 😍",
+        "Couldn't agree more with this.",
+        "Wow, just wow.",
+        "Thanks for sharing!",
+        "I need to try this ASAP.",
+        "So cool!",
+        "Great post! 🔥"
+    ];
+    
+    const renderCount = Math.min(count, 5); // cap at 5 so it doesn't get crazy
+    
+    for (let i = 0; i < renderCount; i++) {
+        const user = mockUsers[Math.floor(Math.random() * mockUsers.length)];
+        const text = mockTexts[Math.floor(Math.random() * mockTexts.length)];
+        const likes = Math.floor(Math.random() * 20);
+        
+        const commentOptionsHtml = `
+            <div class="relative ml-2 flex items-center space-x-1">
+                <button onclick="alert('Demo: Action disabled')" class="text-slate-400 hover:text-red-500 transition flex items-center px-1" title="Like">
+                    <i class="far fa-heart text-xs transition-transform duration-150"></i>
+                    ${likes > 0 ? `<span class="text-[10px] ml-1 font-semibold">${likes}</span>` : ''}
+                </button>
+                <button onclick="alert('Demo: Action disabled')" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition px-1"><i class="fas fa-ellipsis-h text-xs"></i></button>
             </div>
-        </div>
-    `;
+        `;
+        
+        commentsList.innerHTML += `
+            <div class="space-y-1 mt-4 animate-fade-in">
+                <div class="flex items-start space-x-2">
+                    <a href="#" onclick="alert('Demo: Action disabled')" class="block shrink-0 hover:opacity-80 transition">
+                        <img src="${user.a}" class="w-8 h-8 rounded-full object-cover shadow" alt="Avatar">
+                    </a>
+                    <div class="flex-1">
+                        <div class="flex items-center mt-0.5">
+                            <div class="bg-slate-100 dark:bg-slate-700 px-3 py-2 rounded-2xl border border-slate-200/50 dark:border-slate-700/50 w-fit inline-block max-w-full">
+                                <a href="#" onclick="alert('Demo: Action disabled')" class="block font-bold text-sm leading-tight text-slate-800 dark:text-slate-100 hover:underline">${user.f}</a>
+                                <div class="text-[13px] mt-1 text-slate-700 dark:text-slate-200 break-words whitespace-pre-wrap">${text}</div>
+                            </div>
+                            ${commentOptionsHtml}
+                        </div>
+                        <div class="flex items-center space-x-2 mt-1 ml-2">
+                            <span class="text-[10px] text-blue-500 hover:underline cursor-pointer font-semibold" onclick="alert('Demo: Action disabled')">Reply</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
 }
 
 window.postComment = function(event) {
@@ -567,20 +619,46 @@ window.postComment = function(event) {
     if(!text) return;
     
     const commentsList = document.getElementById('comments-list');
-    const newComment = document.createElement('div');
-    newComment.className = 'flex space-x-3 mb-2 animate-fade-in';
-    newComment.innerHTML = `
-        <img src="https://ui-avatars.com/api/?name=Demo+User&background=3b82f6&color=fff" class="w-8 h-8 rounded-full" alt="Avatar">
-        <div class="flex-1">
-            <div class="bg-slate-100 dark:bg-slate-800 rounded-2xl p-3 inline-block">
-                <span class="font-bold text-sm text-slate-800 dark:text-slate-100 block">demouser</span>
-                <span class="text-sm text-slate-700 dark:text-slate-300">${text}</span>
-            </div>
-            <div class="text-xs text-slate-400 mt-1 ml-2">Just now</div>
+    
+    // Remove "No comments" text if it's the first comment
+    if (commentsList.innerHTML.includes('No comments yet')) {
+        commentsList.innerHTML = '';
+    }
+    
+    const commentOptionsHtml = `
+        <div class="relative ml-2 flex items-center space-x-1">
+            <button class="text-slate-400 hover:text-red-500 transition flex items-center px-1" title="Like">
+                <i class="far fa-heart text-xs transition-transform duration-150"></i>
+            </button>
+            <button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition px-1"><i class="fas fa-ellipsis-h text-xs"></i></button>
         </div>
     `;
-    commentsList.insertBefore(newComment, commentsList.firstChild);
+    
+    const newComment = document.createElement('div');
+    newComment.className = 'space-y-1 mt-4 animate-fade-in';
+    newComment.innerHTML = `
+        <div class="flex items-start space-x-2">
+            <a href="#" class="block shrink-0 hover:opacity-80 transition">
+                <img src="https://ui-avatars.com/api/?name=Demo+User&background=3b82f6&color=fff" class="w-8 h-8 rounded-full object-cover shadow" alt="Avatar">
+            </a>
+            <div class="flex-1">
+                <div class="flex items-center mt-0.5">
+                    <div class="bg-slate-100 dark:bg-slate-700 px-3 py-2 rounded-2xl border border-slate-200/50 dark:border-slate-700/50 w-fit inline-block max-w-full">
+                        <a href="#" class="block font-bold text-sm leading-tight text-slate-800 dark:text-slate-100 hover:underline">demouser</a>
+                        <div class="text-[13px] mt-1 text-slate-700 dark:text-slate-200 break-words whitespace-pre-wrap">${text}</div>
+                    </div>
+                    ${commentOptionsHtml}
+                </div>
+                <div class="flex items-center space-x-2 mt-1 ml-2">
+                    <span class="text-[10px] text-blue-500 hover:underline cursor-pointer font-semibold">Reply</span>
+                </div>
+            </div>
+        </div>
+    `;
+    commentsList.appendChild(newComment);
     input.value = '';
+    // Scroll to bottom so the user sees their new comment
+    commentsList.scrollTop = commentsList.scrollHeight;
     
     // Update count in card
     const commentCountSpan = document.querySelector('button[onclick*="post.html"] span');
