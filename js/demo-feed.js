@@ -504,7 +504,7 @@ window.showToast = function(message, containerElement = null) {
 window.initSinglePost = function() {
     const params = new URLSearchParams(window.location.search);
     const postId = parseInt(params.get('id'));
-    const post = preloadedPosts.find(p => p.id === postId) || preloadedPosts[0];
+    const post = window.allDemoPosts.find(p => p.id === postId) || window.allDemoPosts[0];
     
     if (!post) {
         document.getElementById('single-post-container').innerHTML = '<p class="p-4 text-center">Post not found.</p>';
