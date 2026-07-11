@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" class="min-h-screen">
+
 <head>
     <meta charset="UTF-8">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -13,90 +14,241 @@
     <link rel="stylesheet" href="css/style.css">
     <script src="js/theme.js"></script>
 </head>
-<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
 
-<header class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-50 shadow-sm transition-colors duration-300" style="padding-top: env(safe-area-inset-top, 0px);">
-    <div class="flex max-w-7xl mx-auto w-full px-4 sm:px-6 items-center justify-between h-[56px]">
-        <a href="index.html" class="text-xl sm:text-2xl font-black tracking-tight bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent inline-block">
-            Swipedt.
-        </a>
-        <div class="flex items-center space-x-3">
-            <button id="theme-toggle" class="p-2 text-slate-500 hover:text-blue-500 dark:text-slate-400 dark:hover:text-blue-400 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition" title="Toggle Theme">
-                <i class="fas fa-moon text-lg"></i>
-            </button>
-            <a href="#" onclick="window.history.length > 1 ? window.history.back() : window.location.href='home.html'; return false;" class="hidden sm:flex items-center space-x-2 px-3 py-1.5 text-sm font-semibold text-slate-600 hover:text-blue-500 dark:text-slate-300 dark:hover:text-blue-400 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition border border-slate-200 dark:border-slate-700" title="Go Back">
-                <i class="fas fa-arrow-left"></i>
-                <span>Back</span>
+<body
+    class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-300 relative overflow-x-hidden">
+
+    <header
+        class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-50 shadow-sm transition-colors duration-300"
+        style="padding-top: env(safe-area-inset-top, 0px);">
+        <div class="flex max-w-7xl mx-auto w-full px-4 sm:px-6 items-center justify-between h-[56px]">
+            <a href="index.html"
+                class="text-xl sm:text-2xl font-black tracking-tight bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent inline-block">
+                Swipedt.
             </a>
-            <a href="#" onclick="window.history.length > 1 ? window.history.back() : window.location.href='home.html'; return false;" class="sm:hidden p-2 text-slate-500 hover:text-blue-500 dark:text-slate-400 dark:hover:text-blue-400 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition" title="Go Back">
-                <i class="fas fa-arrow-left text-lg"></i>
-            </a>
-        </div>
-    </div>
-</header>
-
-<main class="flex-1 w-full max-w-4xl mx-auto flex flex-col p-6 relative" style="padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));">
-    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-gradient-to-b from-blue-500/10 to-transparent blur-3xl pointer-events-none -z-10"></div>
-    <div class="absolute top-40 -left-20 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl pointer-events-none -z-10"></div>
-    <div class="absolute top-80 -right-20 w-72 h-72 bg-pink-500/10 rounded-full blur-3xl pointer-events-none -z-10"></div>
-
-    <div class="text-center mb-12 mt-4 md:mt-10">
-        <div class="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-gradient-to-tr from-blue-500 to-purple-600 text-white shadow-xl shadow-blue-500/30 mb-6 transform hover:scale-105 transition duration-300">
-            <i class="fas fa-users text-3xl"></i>
-        </div>
-        <h1 class="text-4xl md:text-5xl font-black tracking-tight text-slate-800 dark:text-white mb-4">
-            Community Guidelines
-        </h1>
-        <p class="text-lg text-slate-500 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
-            Help us keep Swipedt a safe, fun, and engaging place for everyone. Here are the core principles of our community.
-        </p>
-    </div>
-
-    <div class="space-y-8">
-        <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm">
-            <div class="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-500/10 text-blue-500 flex items-center justify-center text-xl mb-4">
-                <i class="fas fa-heart"></i>
-            </div>
-            <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-4">1. Respect Each Other</h2>
-            <p class="text-slate-500 dark:text-slate-400 leading-relaxed mb-4">
-                Treat everyone with respect. We do not tolerate harassment, bullying, hate speech, or abuse of any kind. Let's build a positive environment.
-            </p>
-        </div>
-
-        <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm">
-            <div class="w-12 h-12 rounded-2xl bg-purple-50 dark:bg-purple-500/10 text-purple-500 flex items-center justify-center text-xl mb-4">
-                <i class="fas fa-shield-alt"></i>
-            </div>
-            <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-4">2. Keep It Safe</h2>
-            <p class="text-slate-500 dark:text-slate-400 leading-relaxed mb-4">
-                Do not share harmful, explicit, or illegal content. We are committed to maintaining a platform where users of all ages can feel secure.
-            </p>
-        </div>
-
-        <div class="bg-gradient-to-br from-blue-500 to-purple-600 p-[2px] rounded-3xl shadow-lg">
-            <div class="bg-white dark:bg-slate-800 p-8 rounded-[22px]">
-                <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-4">Questions & Support</h2>
-                <p class="text-slate-500 dark:text-slate-400 leading-relaxed mb-4">
-                    For any questions regarding our guidelines, or to report severe violations, please reach out to:
-                </p>
-                <a href="mailto:support@swipedt.site" class="inline-flex items-center space-x-2 text-blue-500 hover:text-blue-600 font-bold transition">
-                    <i class="fas fa-envelope"></i>
-                    <span>support@swipedt.site</span>
+            <div class="flex items-center space-x-3">
+                <button id="theme-toggle"
+                    class="p-2 text-slate-500 hover:text-blue-500 dark:text-slate-400 dark:hover:text-blue-400 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition"
+                    title="Toggle Theme">
+                    <i class="fas fa-moon text-lg"></i>
+                </button>
+                <a href="#"
+                    onclick="window.history.length > 1 ? window.history.back() : window.location.href='home.html'; return false;"
+                    class="hidden sm:flex items-center space-x-2 px-3 py-1.5 text-sm font-semibold text-slate-600 hover:text-blue-500 dark:text-slate-300 dark:hover:text-blue-400 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition border border-slate-200 dark:border-slate-700"
+                    title="Go Back">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Back</span>
+                </a>
+                <a href="#"
+                    onclick="window.history.length > 1 ? window.history.back() : window.location.href='home.html'; return false;"
+                    class="sm:hidden p-2 text-slate-500 hover:text-blue-500 dark:text-slate-400 dark:hover:text-blue-400 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition"
+                    title="Go Back">
+                    <i class="fas fa-arrow-left text-lg"></i>
                 </a>
             </div>
         </div>
-    </div>
-</main>
-<script>
-    document.getElementById('theme-toggle')?.addEventListener('click', function() {
-        if (document.documentElement.classList.contains('dark')) {
-            document.documentElement.classList.remove('dark');
-            localStorage.setItem('swipedt_theme', 'light');
-        } else {
-            document.documentElement.classList.add('dark');
-            localStorage.setItem('swipedt_theme', 'dark');
-        }
-    });
-</script>
+    </header>
+
+    <main class="flex-1 w-full max-w-4xl mx-auto flex flex-col p-6 relative" style="padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));">
+        
+        <!-- Decorative background elements -->
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-gradient-to-b from-blue-500/10 to-transparent blur-3xl pointer-events-none -z-10"></div>
+        <div class="absolute top-40 -left-20 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl pointer-events-none -z-10"></div>
+        <div class="absolute top-80 -right-20 w-72 h-72 bg-pink-500/10 rounded-full blur-3xl pointer-events-none -z-10"></div>
+
+        <!-- Header -->
+        <div class="text-center mb-12 mt-4 md:mt-10">
+            <div class="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-gradient-to-tr from-blue-500 to-purple-600 text-white shadow-xl shadow-blue-500/30 mb-6 transform hover:scale-105 transition duration-300">
+                <i class="fas fa-book-open text-3xl"></i>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-black tracking-tight text-slate-800 dark:text-white mb-4">
+                Community Guidelines
+            </h1>
+            <p class="text-lg text-slate-500 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                Our vision is to build a safe, inclusive, and vibrant social network. Please read and adhere to these guidelines to ensure a positive environment for all members.
+            </p>
+        </div>
+
+        <!-- What is NOT Allowed Section -->
+        <div class="mb-16">
+            <div class="flex items-center space-x-3 mb-8">
+                <h2 class="text-2xl font-extrabold text-slate-800 dark:text-white flex items-center">
+                    <span class="w-10 h-10 rounded-xl bg-red-100 dark:bg-red-900/40 text-red-500 flex items-center justify-center mr-3 shadow-inner">
+                        <i class="fas fa-ban"></i>
+                    </span>
+                    Strictly Prohibited
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Item 1 -->
+                <div class="bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition duration-300 group flex flex-col items-center text-center">
+                    <div class="w-12 h-12 rounded-2xl bg-red-50 dark:bg-red-500/10 text-red-500 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-images"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2">Explicit Material</h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                        The distribution of explicit, adult, or non-consensual media is strictly forbidden. Users must maintain a safe environment and respect the privacy of others at all times.
+                    </p>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition duration-300 group flex flex-col items-center text-center">
+                    <div class="w-12 h-12 rounded-2xl bg-orange-50 dark:bg-orange-500/10 text-orange-500 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-bullhorn"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2">Hate Speech & Discrimination</h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                        Hate speech, slurs, and discriminatory language in any form are strictly prohibited. We maintain a zero-tolerance policy for abusive language directed at anyone, regardless of background, identity, or beliefs.
+                    </p>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition duration-300 group flex flex-col items-center text-center">
+                    <div class="w-12 h-12 rounded-2xl bg-yellow-50 dark:bg-yellow-500/10 text-yellow-500 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-link"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2">Spam & Scams</h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                        The dissemination of malicious links, unauthorized promotions, gambling advertisements, or any form of deceptive scams is forbidden. Protect the integrity of the platform.
+                    </p>
+                </div>
+
+                <!-- Item 4 -->
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition duration-300 group flex flex-col items-center text-center">
+                    <div class="w-12 h-12 rounded-2xl bg-purple-50 dark:bg-purple-500/10 text-purple-500 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-newspaper"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2">Misinformation</h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                        The deliberate spread of false information, unverified claims, or misleading news designed to deceive the community is prohibited. Users are expected to verify sources before sharing.
+                    </p>
+                </div>
+
+                <!-- Item 5 -->
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition duration-300 group flex flex-col items-center text-center">
+                    <div class="w-12 h-12 rounded-2xl bg-pink-50 dark:bg-pink-500/10 text-pink-500 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-user-slash"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2">Targeted Harassment</h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                        Engaging in systematic bullying, targeted harassment, or any organized effort to intimidate and threaten individuals or groups will result in immediate suspension.
+                    </p>
+                </div>
+
+                <!-- Item 6 -->
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition duration-300 group flex flex-col items-center text-center">
+                    <div class="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-500/10 text-indigo-500 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-user-secret"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2">Impersonation</h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                        The creation of fraudulent accounts to impersonate public figures or other users is prohibited. Parody or fan accounts are permitted strictly on the condition that their unofficial nature is clearly stated.
+                    </p>
+                </div>
+
+                <!-- Item 7 -->
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition duration-300 group flex flex-col items-center text-center">
+                    <div class="w-12 h-12 rounded-2xl bg-teal-50 dark:bg-teal-500/10 text-teal-500 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-bomb"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2">Disruptive Behavior</h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                        Engaging in excessive, repetitive posting or mass-commenting intended to disrupt platform operations, degrade user experience, or intentionally cause server instability is strictly forbidden.
+                    </p>
+                </div>
+
+                <!-- Item 8 -->
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition duration-300 group flex flex-col items-center text-center">
+                    <div class="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-500/10 text-blue-500 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-landmark"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2">Civic & Political Integrity</h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                        To maintain a positive environment, the platform may not be used for political campaigning, lobbying, or aggressive partisan debates. Spreading electoral misinformation, inciting political extremism, or coordinating bot networks to push political agendas is strictly prohibited.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- What IS Allowed Section -->
+        <div>
+            <div class="flex items-center space-x-3 mb-8">
+                <h2 class="text-2xl font-extrabold text-slate-800 dark:text-white flex items-center">
+                    <span class="w-10 h-10 rounded-xl bg-green-100 dark:bg-green-900/40 text-green-500 flex items-center justify-center mr-3 shadow-inner">
+                        <i class="fas fa-heart"></i>
+                    </span>
+                    Encouraged Interactions
+                </h2>
+            </div>
+
+            <div class="relative rounded-3xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-xl overflow-hidden p-6 md:p-10">
+                <div class="absolute -top-24 -right-24 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -bottom-24 -left-24 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                
+                <div class="h-full flex flex-col md:flex-row items-center gap-8 relative z-10">
+                    
+                    <div class="flex-1 space-y-6">
+                        <div class="flex items-start space-x-4">
+                            <div class="mt-1 w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/40 text-green-500 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-check text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-800 dark:text-white text-lg">Respectful Dialogue</h4>
+                                <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Maintain professionalism and courtesy during interactions. Constructive debates are encouraged, provided they remain respectful.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-4">
+                            <div class="mt-1 w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-500 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-check text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-800 dark:text-white text-lg">Authenticity & Verification</h4>
+                                <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Foster a culture of trust by sharing authentic experiences and relying on verified, credible sources when disseminating information.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-4">
+                            <div class="mt-1 w-8 h-8 rounded-full bg-purple-100 dark:bg-purple-900/40 text-purple-500 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-check text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-800 dark:text-white text-lg">Support & Inclusion</h4>
+                                <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Contribute to a diverse and inclusive community by engaging positively and supporting fellow users across all backgrounds.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="w-full md:w-1/3 flex flex-col gap-4">
+                        <div class="flex flex-col items-center text-center p-6 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-700 h-full justify-center">
+                            <i class="fas fa-shield-alt text-4xl text-slate-300 dark:text-slate-600 mb-4"></i>
+                            <h4 class="font-bold text-slate-800 dark:text-white mb-2">See a violation?</h4>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">Help us maintain a secure platform by actively reporting posts or comments that breach these established guidelines.</p>
+                        </div>
+                        <div class="flex flex-col items-center text-center p-6 bg-blue-50 dark:bg-blue-900/20 rounded-2xl border border-blue-100 dark:border-blue-800/50 h-full justify-center group hover:bg-blue-100 dark:hover:bg-blue-900/40 transition">
+                            <i class="fas fa-life-ring text-4xl text-blue-300 dark:text-blue-500 mb-4 group-hover:scale-110 transition-transform"></i>
+                            <h4 class="font-bold text-blue-800 dark:text-blue-100 mb-2">Need Assistance?</h4>
+                            <p class="text-xs text-blue-600 dark:text-blue-300 mb-4">Experiencing a bug or need account recovery? Visit our Help Center.</p>
+                            <a href="help.html" class="inline-flex items-center justify-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white text-xs font-bold rounded-lg transition shadow-sm">Go to Help Center</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+        document.getElementById('theme-toggle')?.addEventListener('click', function () {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('swipedt_theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('swipedt_theme', 'dark');
+            }
+        });
+    </script>
 </body>
+
 </html>
