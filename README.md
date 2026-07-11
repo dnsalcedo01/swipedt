@@ -6,7 +6,7 @@ Welcome to the static demo version of Swipedt! This project showcases the fronte
 
 - **Landing Page**: A premium, animated introduction with glowing gradients and interactive mockups.
 - **Login Experience**: A polished authentication UI with mock demo credentials.
-- **Swipe Feed**: A fully functional Tinder-style swipe interface for posts, complete with beautiful image handling and responsive layout.
+- **Swipe Feed**: A fully functional swipe interface for posts, complete with image handling and responsive layout.
 - **Dark/Light Mode**: Seamless theme switching using Tailwind CSS.
 
 ## Demo Credentials
