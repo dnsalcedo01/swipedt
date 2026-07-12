@@ -23,8 +23,7 @@ This version is completely serverless and statically hosted. It relies on:
 - HTML/CSS/JavaScript (Vanilla)
 - Tailwind CSS (via CDN)
 - LocalStorage (for mock authentication state)
-- FontAwesome (for icons)
-- Google Fonts (Inter)
+- FontAwesome (for icons) & Google Fonts (Inter)
 
 All PHP dependencies and database connections from the original codebase have been completely removed or simulated in JavaScript to ensure 100% compatibility with GitHub Pages.
 
