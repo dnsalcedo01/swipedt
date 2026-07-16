@@ -278,6 +278,7 @@ window.switchFeed = function (type) {
 
     // Filter posts
     preloadedPosts = window.allDemoPosts.filter(p => {
+        if (p.user_id === 999) return false; // Exclude own profile posts from main feeds
         if (type === 'suggested') return p.is_following === 0;
         return p.is_following === 1;
     }).map(p => ({ ...p })); // deep copy so we don't mutate original objects directly when swiping
