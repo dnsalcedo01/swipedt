@@ -1,5 +1,65 @@
 window.allDemoPosts = [
     {
+        id: 9999,
+        user_id: 999,
+        post_hash: 'demo_user_first_post',
+        username: 'demo',
+        full_name: 'Demo User',
+        avatar_color: '#3b82f6',
+        avatar_url: 'https://ui-avatars.com/api/?name=Demo+User&background=3b82f6&color=fff&size=128',
+        text_content: 'Hey everyone! This is my first post on my demo profile. Trying out Swipedt, and the swipe-to-scroll mechanic is incredibly smooth! 😎🔥',
+        image_url: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=600&q=80',
+        created_at: new Date(Date.now() - 3600000).toISOString(),
+        like_count: 8,
+        comment_count: 2,
+        recent_liker: 'traveler_joe',
+        second_liker: 'tech_guru',
+        user_liked: 0,
+        user_saved: 0,
+        is_following: 1,
+        is_badge_verified: 1
+    },
+    {
+        id: 9998,
+        user_id: 999,
+        post_hash: 'demo_user_second_post',
+        username: 'demo',
+        full_name: 'Demo User',
+        avatar_color: '#3b82f6',
+        avatar_url: 'https://ui-avatars.com/api/?name=Demo+User&background=3b82f6&color=fff&size=128',
+        text_content: 'The user interface here is absolutely stunning. Dark mode is definitely my favorite setting! 🌙✨',
+        image_url: 'https://images.unsplash.com/photo-1618761714954-0b8cd0026356?auto=format&fit=crop&w=600&q=80',
+        created_at: new Date(Date.now() - 7200000).toISOString(),
+        like_count: 14,
+        comment_count: 5,
+        recent_liker: 'design_pro',
+        second_liker: 'frontend_dev',
+        user_liked: 0,
+        user_saved: 0,
+        is_following: 1,
+        is_badge_verified: 1
+    },
+    {
+        id: 9997,
+        user_id: 999,
+        post_hash: 'demo_user_third_post',
+        username: 'demo',
+        full_name: 'Demo User',
+        avatar_color: '#3b82f6',
+        avatar_url: 'https://ui-avatars.com/api/?name=Demo+User&background=3b82f6&color=fff&size=128',
+        text_content: 'Just experimenting with different features. Loving how responsive everything feels. 🚀 #testing',
+        image_url: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=600&q=80',
+        created_at: new Date(Date.now() - 86400000).toISOString(),
+        like_count: 42,
+        comment_count: 8,
+        recent_liker: 'tech_guru',
+        second_liker: 'traveler_joe',
+        user_liked: 0,
+        user_saved: 0,
+        is_following: 1,
+        is_badge_verified: 1
+    },
+    {
         id: 1,
         user_id: 101,
         post_hash: 'abc1234',
@@ -108,6 +168,8 @@ let isAnimating = false;
 document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('single-post-container')) {
         initSinglePost();
+    } else if (window.location.pathname.includes('profile.html')) {
+        initProfileFeed();
     } else {
         initDemoFeed();
     }
@@ -177,6 +239,26 @@ function initDemoFeed() {
     window.switchFeed('suggested');
 }
 
+window.initProfileFeed = function () {
+    if (isAnimating) return;
+
+    preloadedPosts = window.allDemoPosts.filter(p => p.user_id === 999).map(p => ({ ...p }));
+
+    if (activeCard) {
+        activeCard.remove();
+        activeCard = null;
+    }
+    document.querySelectorAll('.post-card').forEach(c => c.remove());
+
+    const container = document.getElementById('feed-container');
+    if (container) {
+        const noPostsMsg = document.getElementById('no-posts-message');
+        if (noPostsMsg) noPostsMsg.classList.add('hidden');
+    }
+
+    showNextPost();
+};
+
 window.switchFeed = function (type) {
     if (isAnimating) return;
 
@@ -220,9 +302,19 @@ function showNextPost() {
     if (isAnimating) return;
 
     if (preloadedPosts.length === 0) {
-        document.getElementById('no-posts-message').classList.remove('hidden');
-        if (typeof toggleSwipeOverlays === 'function') toggleSwipeOverlays(false);
-        return;
+        if (window.location.pathname.includes('profile.html')) {
+            // Loop demo user posts in profile
+            preloadedPosts = window.allDemoPosts.filter(p => p.user_id === 999).map(p => ({ ...p }));
+            if (preloadedPosts.length === 0) {
+                document.getElementById('no-posts-message').classList.remove('hidden');
+                if (typeof toggleSwipeOverlays === 'function') toggleSwipeOverlays(false);
+                return;
+            }
+        } else {
+            document.getElementById('no-posts-message').classList.remove('hidden');
+            if (typeof toggleSwipeOverlays === 'function') toggleSwipeOverlays(false);
+            return;
+        }
     }
 
     const post = preloadedPosts.shift();
@@ -320,7 +412,7 @@ function createPostCard(post) {
     card.innerHTML = `
         <div class="flex justify-between items-center p-4 border-b border-slate-100 dark:border-slate-700">
             <div class="flex items-center space-x-3">
-                <a href="#" onclick="window.App.alert('Demo', 'Profile views are disabled in the demo.', 'info')" class="flex items-center space-x-3 hover:opacity-90 transition">
+                <a href="${post.user_id === 999 ? 'profile.html' : '#'}" ${post.user_id === 999 ? '' : `onclick="window.App.alert('Demo', 'Profile views are disabled in the demo.', 'info'); return false;"`} class="flex items-center space-x-3 hover:opacity-90 transition">
                     ${avatarHtml}
                     <div class="flex flex-col text-left">
                         <span class="font-bold text-sm leading-tight text-slate-800 dark:text-slate-100 hover:underline">${post.full_name}${verifiedBadge}</span>
@@ -744,13 +836,13 @@ window.postComment = function (event) {
     newComment.className = 'space-y-1 mt-4 animate-fade-in';
     newComment.innerHTML = `
         <div class="flex items-start space-x-2">
-            <a href="#" class="block shrink-0 hover:opacity-80 transition">
+            <a href="profile.html" class="block shrink-0 hover:opacity-80 transition">
                 <img src="https://ui-avatars.com/api/?name=Demo+User&background=3b82f6&color=fff" class="w-8 h-8 rounded-full object-cover shadow" alt="Avatar">
             </a>
             <div class="flex-1">
                 <div class="flex items-center mt-0.5">
                     <div class="bg-slate-100 dark:bg-slate-700 px-3 py-2 rounded-2xl border border-slate-200/50 dark:border-slate-700/50 w-fit inline-block max-w-full">
-                        <a href="#" class="block font-bold text-sm leading-tight text-slate-800 dark:text-slate-100 hover:underline">demouser</a>
+                        <a href="profile.html" class="block font-bold text-sm leading-tight text-slate-800 dark:text-slate-100 hover:underline">demouser</a>
                         <div class="text-[13px] mt-1 text-slate-700 dark:text-slate-200 break-words whitespace-pre-wrap">${text}</div>
                     </div>
                     ${commentOptionsHtml}
