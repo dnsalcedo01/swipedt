@@ -434,7 +434,7 @@ function createPostCard(post) {
                 ${window.formatLikersText ? window.formatLikersText(post.like_count, post.recent_liker, post.second_liker, false, post.id) : `Liked by @${post.recent_liker} and ${post.like_count - 1} others`}
             </div>
         </div>
-        <div class="flex justify-between items-center px-6 py-3 border-t border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50">
+        <div class="flex justify-between items-center px-6 py-3 border-t border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50 transition-colors duration-300">
             <button class="flex items-center space-x-2 transition ${post.user_liked ? 'text-red-500 dark:text-red-400' : 'text-slate-400 hover:text-red-500'}" onclick="${post.user_id === 999 ? "window.App.alert('Demo', 'This is a demo post. Interactions are disabled.', 'info')" : `window.toggleLike(event, ${post.id}, this)`}">
                 <i class="${post.user_liked ? 'fas' : 'far'} fa-heart text-xl"></i>
                 <span class="text-xs font-bold">${post.like_count}</span>
