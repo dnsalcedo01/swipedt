@@ -236,7 +236,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function initDemoFeed() {
-    window.switchFeed('suggested');
+    const savedTab = sessionStorage.getItem('activeFeedTab') || 'suggested';
+    window.switchFeed(savedTab);
 }
 
 window.initProfileFeed = function () {
@@ -261,6 +262,8 @@ window.initProfileFeed = function () {
 
 window.switchFeed = function (type) {
     if (isAnimating) return;
+
+    sessionStorage.setItem('activeFeedTab', type);
 
     // Update active tab styling
     const suggestedTab = document.getElementById('tab-suggested');
