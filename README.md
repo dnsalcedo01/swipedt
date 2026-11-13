@@ -11,6 +11,8 @@ Welcome to the static demo version of Swipedt! This project showcases the fronte
 
 ## Demo Credentials
 
+<img width="1731" height="800" alt="image" src="https://github.com/user-attachments/assets/93de53e7-a18e-4e5b-9ad5-be257d4a4977" />
+
 To view the swipe feed, log in with:
 - **Username**: `demo`
 - **Password**: `demouser`
