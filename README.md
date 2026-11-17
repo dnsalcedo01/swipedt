@@ -1,4 +1,5 @@
 # Swipedt. - Swipe, Don't Scroll
+<img width="1731" height="800" alt="image" src="https://github.com/user-attachments/assets/4282d249-7127-4277-bab6-024ca1ced2af" />
 
 Welcome to the static demo version of Swipedt! This project showcases the frontend experience of a modern, swipe-based social media application designed to eliminate endless scrolling. 
 
